@@ -38,9 +38,13 @@ test("paper-dawn is a light skin", () => {
 });
 
 test("injecting a skin also boots the usage HUD", () => {
+  const css = compileOverlay(getPack("straw-sea"));
+  assert.match(css, /#grok-bot-skin-usage/);
+  assert.match(css, /pointer-events: none/);
   const js = injectExpression("/*css*/", "straw-sea");
   assert.match(js, /getCursorUsageSummary/);
   assert.match(js, /getCursorUsageBreakdown/);
+  assert.match(js, /desktop\.main/);
   assert.match(js, /grok-bot-skin-usage/);
 });
 

@@ -1,38 +1,51 @@
-export const USAGE_HUD_CSS = `html[data-grok-bot-skin] #grok-bot-skin-usage {
-  position: fixed !important;
-  left: 12px !important;
-  bottom: 12px !important;
-  z-index: 80 !important;
-  width: min(228px, calc(100vw - 24px)) !important;
+export const USAGE_HUD_CSS = `html[data-grok-bot-skin] .sand-agents-sidebar {
+  position: relative !important;
+}
+html[data-grok-bot-skin] #grok-bot-skin-usage {
+  position: absolute !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: 64px !important;
+  top: auto !important;
+  z-index: 60 !important;
+  width: auto !important;
   box-sizing: border-box !important;
-  padding: 10px 12px 11px !important;
-  border-radius: 16px !important;
+  padding: 8px 10px 9px !important;
+  border-radius: 14px !important;
   color: var(--grok-skin-text, inherit) !important;
-  background: color-mix(in srgb, var(--grok-skin-pane, #222) 86%, transparent) !important;
+  background: color-mix(in srgb, var(--grok-skin-pane, #222) 88%, transparent) !important;
   box-shadow:
-    0 6px 0 color-mix(in srgb, var(--grok-skin-accent, #888) 22%, transparent),
+    0 4px 0 color-mix(in srgb, var(--grok-skin-accent, #888) 22%, transparent),
     inset 0 0 0 1px color-mix(in srgb, var(--grok-skin-accent, #888) 28%, transparent) !important;
   font: 12px/1.35 ui-sans-serif, system-ui, sans-serif !important;
-  pointer-events: auto !important;
-  cursor: default !important;
+  pointer-events: none !important;
   user-select: none !important;
+}
+html[data-grok-bot-skin] body:not(:has(.sand-agents-sidebar)) #grok-bot-skin-usage,
+html[data-grok-bot-skin] #grok-bot-skin-usage[data-hud-place="window"] {
+  position: fixed !important;
+  top: 12px !important;
+  right: 16px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: min(240px, calc(100vw - 32px)) !important;
 }
 html[data-grok-bot-skin] #grok-bot-skin-usage .hud-kicker {
   opacity: 0.72;
   font-size: 10px;
   letter-spacing: 0.04em;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 html[data-grok-bot-skin] #grok-bot-skin-usage .hud-line {
   font-weight: 650;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 html[data-grok-bot-skin] #grok-bot-skin-usage .hud-bar {
-  height: 7px;
+  height: 6px;
   border-radius: 99px;
   overflow: hidden;
   background: color-mix(in srgb, var(--grok-skin-text, #888) 12%, transparent);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 html[data-grok-bot-skin] #grok-bot-skin-usage .hud-bar > i {
   display: block;
@@ -67,6 +80,13 @@ function usageHudTeardown() {
 function usageHudBoot() {
   const HOST_ID = "grok-bot-skin-usage";
 
+  function desktopApi() {
+    const desktop = window.desktop;
+    if (!desktop || typeof desktop !== "object") return null;
+    if (desktop.main && typeof desktop.main === "object") return desktop.main;
+    return desktop;
+  }
+
   function asNum(value) {
     if (value == null) return null;
     if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -94,10 +114,18 @@ function usageHudBoot() {
     return `${Math.round(n)}`;
   }
 
+  function formatReset(ms) {
+    const n = asNum(ms);
+    if (n == null || n <= 0) return "";
+    const date = new Date(n);
+    if (!Number.isFinite(date.getTime())) return "";
+    return `${date.getMonth() + 1}/${date.getDate()} 重置`;
+  }
+
   function pickTokens(value, depth = 0) {
-    if (!value || typeof value !== "object" || depth > 4) return null;
-    const input = asNum(value.totalInputTokens ?? value.total_input_tokens);
-    const output = asNum(value.totalOutputTokens ?? value.total_output_tokens);
+    if (!value || typeof value !== "object" || depth > 5) return null;
+    const input = asNum(value.totalInputTokens ?? value.total_input_tokens ?? value.inputTokens);
+    const output = asNum(value.totalOutputTokens ?? value.total_output_tokens ?? value.outputTokens);
     const cacheRead = asNum(value.totalCacheReadTokens ?? value.total_cache_read_tokens) || 0;
     const cacheWrite = asNum(value.totalCacheWriteTokens ?? value.total_cache_write_tokens) || 0;
     if (input != null || output != null) {
@@ -105,12 +133,16 @@ function usageHudBoot() {
       const out = output || 0;
       return { input: inn, output: out, total: inn + out + cacheRead + cacheWrite };
     }
-    if (Array.isArray(value.aggregations)) {
+    if (Array.isArray(value.aggregations) || Array.isArray(value.bots) || Array.isArray(value.days)) {
       let inn = 0;
       let out = 0;
-      for (const row of value.aggregations) {
-        inn += asNum(row.inputTokens ?? row.input_tokens) || 0;
-        out += asNum(row.outputTokens ?? row.output_tokens) || 0;
+      const rows = [].concat(value.aggregations || [], value.bots || [], value.days || []);
+      for (const row of rows) {
+        const nested = pickTokens(row, depth + 1);
+        if (nested) {
+          inn += nested.input;
+          out += nested.output;
+        }
       }
       if (inn || out) return { input: inn, output: out, total: inn + out };
     }
@@ -127,8 +159,8 @@ function usageHudBoot() {
     if (typeof value !== "object") return null;
     const raw =
       value.percentUsed ??
-      value.usagePercent ??
       value.sandUsagePercent ??
+      value.usagePercent ??
       value.percent_of_burst_used ??
       value.percentOfBurstUsed ??
       value.usage_percent;
@@ -141,6 +173,11 @@ function usageHudBoot() {
     return null;
   }
 
+  function pickPlan(value) {
+    if (!value || typeof value !== "object") return "";
+    return String(value.unifiedPlanName || value.grokPlanLabel || value.planName || "").trim();
+  }
+
   function readDomPercent() {
     const el = document.querySelector("[data-sand-weekly-usage-percent]");
     if (!el) return null;
@@ -150,7 +187,7 @@ function usageHudBoot() {
   }
 
   async function callDesktop(name, args) {
-    const api = window.desktop;
+    const api = desktopApi();
     const fn = api && api[name];
     if (typeof fn !== "function") return null;
     try {
@@ -160,63 +197,105 @@ function usageHudBoot() {
     }
   }
 
-  async function loadUsage() {
-    const [breakdown, summary, weekly] = await Promise.all([
-      callDesktop("getCursorUsageBreakdown", [{ includeCredits: true }]),
-      callDesktop("getCursorUsageSummary"),
-      callDesktop("getCursorWeeklyUsage"),
-    ]);
+  function buildState({ auth, breakdown, summary, weekly }) {
+    const signedIn = !auth || auth.kind === "logged-in" || auth.status === "logged-in";
     const tokens = pickTokens(breakdown) || pickTokens(summary) || pickTokens(weekly);
-    let used = pickPercent(summary) ?? pickPercent(weekly) ?? pickPercent(breakdown);
+    let used = pickPercent(weekly) ?? pickPercent(summary) ?? pickPercent(breakdown);
     if (used == null) used = readDomPercent();
     used = used == null ? null : Math.min(100, Math.max(0, used));
     const remaining = used == null ? null : Math.max(0, 100 - used);
-    const resetMs = asNum(summary?.nextResetMs ?? weekly?.nextResetMs ?? weekly?.usage?.nextResetMs);
-    return { tokens, used, remaining, resetMs };
+    const resetMs =
+      asNum(weekly?.nextResetMs) ??
+      asNum(summary?.sandUsageResetTimestampMs) ??
+      asNum(summary?.nextResetMs);
+    const plan = pickPlan(weekly) || pickPlan(summary);
+    return { signedIn, tokens, used, remaining, resetMs, plan };
   }
 
-  function paint(state) {
+  function hostPlace() {
+    return document.querySelector(".sand-agents-sidebar") || document.body;
+  }
+
+  function ensureHost() {
     let host = document.getElementById(HOST_ID);
     if (!host) {
       host = document.createElement("div");
       host.id = HOST_ID;
       host.setAttribute("aria-live", "polite");
-      (document.querySelector(".sand-shell") || document.body).appendChild(host);
+      host.setAttribute("aria-hidden", "true");
     }
+    const parent = hostPlace();
+    if (host.parentNode !== parent) parent.appendChild(host);
+    host.dataset.hudPlace = parent.classList?.contains("sand-agents-sidebar")
+      ? "sidebar"
+      : "window";
+    return host;
+  }
+
+  async function loadAndPaint() {
+    const authP = callDesktop("getCursorAuthStatus");
+    const summaryP = callDesktop("getCursorUsageSummary");
+    const weeklyP = callDesktop("getCursorWeeklyUsage");
+    const breakdownP = callDesktop("getCursorUsageBreakdown", [{ includeCredits: true }]);
+    const [auth, summary, weekly] = await Promise.all([authP, summaryP, weeklyP]);
+    paint(buildState({ auth, summary, weekly }));
+    const breakdown = await breakdownP;
+    if (pickTokens(breakdown)) {
+      paint(buildState({ auth, breakdown, summary, weekly }));
+    }
+  }
+
+  function paint(state) {
+    const host = ensureHost();
     if (!state || (state.tokens == null && state.used == null)) {
+      const why = state && state.signedIn === false ? "当前窗口还没登录" : "暂时读不到用量";
       host.innerHTML =
-        '<div class="hud-kicker">本周期用量</div><div class="hud-line">暂时读不到</div><div class="hud-meta">登录后会从 Grok Bot 账户拉取</div>';
+        `<div class="hud-kicker">本周期用量</div><div class="hud-line">${why}</div>`;
       return;
     }
-    const parts = [];
+    const kicker = state.plan ? `用量 · ${state.plan}` : "本周期用量";
+    const parts = [`<div class="hud-kicker">${kicker}</div>`];
     if (state.tokens) {
       parts.push(
         `<div class="hud-line">${formatTok(state.tokens.total)} tok · 入 ${formatTok(state.tokens.input)} / 出 ${formatTok(state.tokens.output)}</div>`,
       );
     } else {
-      parts.push('<div class="hud-line">订阅额度</div>');
+      parts.push(
+        `<div class="hud-line">已用 ${Math.round(state.used)}% · 剩 ${Math.round(state.remaining)}%</div>`,
+      );
     }
     if (state.used != null) {
       parts.push(
         `<div class="hud-bar" aria-hidden="true"><i style="width:${state.used.toFixed(1)}%"></i></div>`,
       );
-      parts.push(
-        `<div class="hud-meta">已用 ${Math.round(state.used)}% · 剩 ${Math.round(state.remaining)}%</div>`,
-      );
     }
-    host.innerHTML = `<div class="hud-kicker">本周期用量</div>${parts.join("")}`;
+    const meta = [];
+    if (state.tokens && state.used != null) {
+      meta.push(`已用 ${Math.round(state.used)}% · 剩 ${Math.round(state.remaining)}%`);
+    }
+    const reset = formatReset(state.resetMs);
+    if (reset) meta.push(reset);
+    if (meta.length) parts.push(`<div class="hud-meta">${meta.join(" · ")}</div>`);
+    host.innerHTML = parts.join("");
+    host.dataset.hudReady = "1";
   }
 
   async function refresh() {
     try {
-      paint(await loadUsage());
+      await loadAndPaint();
     } catch {
       paint(null);
     }
   }
 
-  refresh();
-  if (!window.__grokBotSkinUsageTimer) {
-    window.__grokBotSkinUsageTimer = setInterval(refresh, 45000);
+  const host = ensureHost();
+  if (!host.dataset.hudReady) {
+    host.innerHTML =
+      '<div class="hud-kicker">本周期用量</div><div class="hud-line">读取中…</div>';
   }
+  if (window.__grokBotSkinUsageTimer) {
+    clearInterval(window.__grokBotSkinUsageTimer);
+  }
+  window.__grokBotSkinUsageTimer = setInterval(refresh, 30000);
+  refresh();
 }
