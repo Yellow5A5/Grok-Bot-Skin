@@ -78,7 +78,7 @@ function paintPreview(pack) {
     })
     .join("");
   transcript.innerHTML = `
-    <div class="msg bot">已经套上「${pack.displayName}」。头像用官方 Upload，界面用这套 token。</div>
+    <div class="msg bot">已经套上「${pack.displayName}」。界面用这套 token 和壁纸。</div>
     <div class="msg user">把皮肤包发给别人，他们也能给自己的 Grok Bot 换上。</div>
     <div class="msg bot">导出 zip 即可。对方运行 grok-bot-skin import 就能装上。</div>
   `;
@@ -100,14 +100,11 @@ function paintDetail(pack) {
       <div class="swatches">${swatches}</div>
     </div>
     <div class="actions">
-      <button class="act primary" data-act="avatar">在 Finder 中拿出头像</button>
-      <button class="act" data-act="chrome">套用界面 CSS</button>
+      <button class="act primary" data-act="chrome">套用界面 CSS</button>
       <button class="act" data-act="launch">启动 Grok Bot 并套上界面</button>
       <button class="act" data-act="export">导出可分享的 .grokskin.zip</button>
-      <button class="act" data-act="copy-prompt">复制 Generate 提示词</button>
     </div>
     <div class="note" id="note"></div>
-    <div class="prompt">${pack.bot.generatePrompt || "这套皮肤没有 Generate 提示词。"}</div>
   `;
   detail.querySelectorAll("[data-act]").forEach((button) => {
     button.addEventListener("click", () => runAction(button.dataset.act, pack, button));
@@ -122,16 +119,6 @@ function setNote(text) {
 async function runAction(act, pack, button) {
   button.disabled = true;
   try {
-    if (act === "copy-prompt") {
-      const prompt = pack.bot.generatePrompt || "";
-      try {
-        await navigator.clipboard.writeText(prompt);
-        setNote("提示词已复制。在 Grok Bot 头像编辑器的 Generate 页粘贴即可。");
-      } catch {
-        setNote("剪贴板不可用。提示词已显示在下方，请手动复制。");
-      }
-      return;
-    }
     if (act === "export") {
       const payload = await getJson("/api/export", {
         method: "POST",
@@ -141,23 +128,18 @@ async function runAction(act, pack, button) {
       setNote(`已导出：${payload.file}`);
       return;
     }
-    const mode = act === "avatar" ? "avatar" : "chrome";
     const payload = await getJson("/api/apply", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         id: pack.id,
-        mode,
+        mode: "chrome",
         launch: act === "launch",
       }),
     });
     status = payload.status;
     paintStatus();
-    if (payload.avatar) {
-      setNote(
-        `Finder 已选中头像。内置 Bot 先「创建副本」，再在你的那份上点「编辑头像」→ Upload →「设置头像」。\n${payload.avatar.avatar}`,
-      );
-    } else if (payload.chrome?.skipped) {
+    if (payload.chrome?.skipped) {
       setNote(
         `界面未注入：${payload.chrome.reason}。先退出 Grok Bot，再点「启动并套上」，或运行 ${payload.chrome.command}`,
       );

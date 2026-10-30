@@ -2,17 +2,13 @@
 
 给 Grok Bot 换皮肤，并且让别人也能换。皮肤是独立的数据包，**不修改** `Grok Bot.app`。
 
-两件事分开做：
-
-1. **头像** — 正方形插画，走 Grok Bot 官方 Upload（或 Generate 提示词）。会跟着账号走。
-2. **界面** — 覆盖 token，并把壁纸画在窗口层 `.sand-shell` 上。只存在于这次带调试端口的进程里。
+这套工具只做 **界面**：覆盖 token，并把壁纸画在窗口层 `.sand-shell` 上。Bot 头像是 Grok Bot 自己的功能，这里不管。
 
 日常：菜单栏记住上一套皮肤，五个包来回切。菜单栏在跑时，点官方 Dock 图标也会套上（先退出没带端口的进程，再带端口打开）。官方包本身不动。
 
 ```mermaid
 flowchart LR
-  pack["skin.json + 图"] --> studio["皮肤工作室"]
-  studio --> avatar["官方 Upload 头像"]
+  pack["skin.json + 壁纸"] --> studio["皮肤工作室"]
   menubar["菜单栏常驻"] --> grok["带调试端口的 Grok Bot"]
   dock["官方 Dock 图标"] --> menubar
   grok --> css["CDP 注入 CSS"]
@@ -71,14 +67,6 @@ Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端�
 
 不要改 `/Applications/Grok Bot.app`：Developer ID 签名、公证、`ElectronAsarIntegrity`，一改就破校验，官方更新也会冲掉。
 
-## 头像
-
-界面皮肤不会改 Grok Bot 里那个圆头像。头像是 Bot 自己的资料。
-
-点对话顶部名字，看到的 **创建副本** 是对的：内置或别人的 Bot 不能直接改头像，要先复制成你的 Bot。然后在你的那份上点 **编辑头像** → Upload → **设置头像**。设好的会跟着账号，手机上也能看到。
-
-图在每套皮肤的 `packs/<id>/assets/avatar.jpg`。工作室「套用头像」只是在 Finder 里选中这张图，方便你拖进官方编辑器。也可以在编辑头像页用 Generate，把皮肤包里的提示词贴进去。
-
 ## 分享给别人
 
 ```bash
@@ -101,7 +89,7 @@ npx grok-bot-skin studio
 
 1. 复制 `examples/template/` 或任意 `packs/*`
 2. 文件夹名与 `skin.json` 的 `id` 一致
-3. 换成自己的正方形头像（主体靠中间，圆形裁切也看得清）
+3. 换成自己的壁纸和封面图
 4. 改 `chrome.tokens`
 5. `npx grok-bot-skin validate packs/my-skin`
 6. `npx grok-bot-skin pack my-skin`
@@ -113,7 +101,7 @@ npx grok-bot-skin studio
 ```bash
 npm run menubar   # 菜单栏：换肤、登录启动、Dock 跟随
 npm run open      # 菜单栏没开时，打开 Grok Bot 并套上上一套
-npm run studio    # 预览、套头像、做包
+npm run studio    # 预览、做包
 ```
 
 做包、导入写在上面两节。其余给调试用，`npx grok-bot-skin` 会列出。

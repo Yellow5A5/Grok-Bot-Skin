@@ -6,7 +6,7 @@
 my-skin/
   skin.json
   assets/
-    avatar.jpg      # 必需，正方形，< 25 MB
+    avatar.jpg      # 工作室列表封面，不是去改 Grok Bot 头像
     wallpaper.jpg   # 可选
 ```
 
@@ -19,9 +19,8 @@ my-skin/
 | 字段 | 作用 |
 |---|---|
 | `appearance` | `dark` 或 `light`，和 Grok Bot Settings → Appearance 对齐 |
-| `bot.avatar` | 相对路径 |
-| `bot.accent` | 头像/气泡建议色 |
-| `bot.generatePrompt` | 别人用官方 Generate 页重画头像的提示词 |
+| `bot.avatar` | 工作室封面图路径 |
+| `bot.accent` | 预览/强调色 |
 | `chrome.tokens.text` | 前景，对应 `--cursor-base` |
 | `chrome.tokens.chrome` | 窗口底 |
 | `chrome.tokens.sidebar` | 侧栏 |
@@ -29,17 +28,6 @@ my-skin/
 | `chrome.tokens.accent` | 强调色 |
 | `chrome.tokens.extra` | 直接写 `--sand-...` 等变量 |
 | `chrome.customCss` | 追加 CSS，选择器尽量保守 |
-
-## 头像怎么画
-
-Grok Bot 会把图裁成圆。按官方 Generate 约束来：
-
-- 主体居中，铺满方幅，重要细节靠近中心
-- 背景铺到四边，不要画圆框、徽章、描边
-- 形状清楚，颜色少
-- 不要字、logo、水印、界面元件
-
-把同一段提示词写进 `bot.generatePrompt`，别人不用你的文件也能在「编辑头像」的 Generate 页生成接近的图。内置 Bot 要先「创建副本」才能改头像。
 
 ## 界面 token
 

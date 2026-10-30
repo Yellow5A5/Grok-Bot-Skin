@@ -111,11 +111,7 @@ export async function revealAvatar(pack) {
   }
   return {
     avatar: pack.avatarAbs,
-    steps: [
-      "在 Grok Bot 里打开这个 Bot 的对话，点顶部名字",
-      "内置 Bot 会看到「创建副本」：先复制成你的 Bot，再打开那一份",
-      "点「编辑头像」→ Upload 已选中的图 →「设置头像」",
-    ],
+    steps: ["这是皮肤包封面图，不是 Grok Bot 头像设置。"],
   };
 }
 

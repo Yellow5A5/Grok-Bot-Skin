@@ -28,10 +28,10 @@ const USAGE = `grok-bot-skin — Grok Bot 皮肤工具
   follow [on|off]        官方 Dock 打开时也套皮肤（需菜单栏在跑）
   login [on|off]         登录时打开菜单栏
   list                   列出已安装皮肤
-  apply <id>             套用头像（官方 Upload）+ 尝试套用界面
+  apply <id>             套用界面（调试端口已开时）
   launch [id]            用皮肤调试端口启动 Grok Bot 并套上界面
   chrome [id]            只注入界面 CSS（需要调试端口已开）
-  avatar <id>            只打开头像文件，供 Grok Bot 官方上传
+  avatar <id>            在 Finder 中打开皮肤封面图
   clear                  移除已注入的界面 CSS
   compile [id]           把皮肤编译成 overlay.css
   pack <id>              打包成可分享的 .grokskin.zip
@@ -96,18 +96,13 @@ async function main() {
     }
     case "apply": {
       const pack = requirePack(args[0]);
-      await revealAvatar(pack);
-      console.log(`头像路径已复制，Finder 已选中：\n  ${pack.avatarAbs}`);
-      if (pack.bot.generatePrompt) {
-        console.log(`\nGenerate 提示词：\n${pack.bot.generatePrompt}`);
-      }
       const status = await grokBotStatus();
       if (status.debug) {
         const result = await applyChrome(pack);
         console.log(`界面 CSS 已注入（${result.cssBytes} bytes）`);
       } else {
         console.log(
-          `\n界面皮肤需要调试端口。先退出 Grok Bot，然后运行：\n  grok-bot-skin launch ${pack.id}`,
+          `\n界面皮肤需要调试端口。先退出 Grok Bot，然后运行：\n  grok-bot-skin open ${pack.id}`,
         );
       }
       return;
@@ -128,10 +123,6 @@ async function main() {
       const packId = args.find((arg) => !arg.startsWith("--"));
       const result = await wearSkin(packId);
       console.log(`Grok Bot 已套上 ${result.pack.displayName}（${result.chrome.cssBytes} bytes）`);
-      if (!args.includes("--chrome-only")) {
-        await revealAvatar(result.pack);
-        console.log("头像已在 Finder 中选中，按官方 Upload 流程设置。");
-      }
       if (args.includes("--once")) return;
       console.log("正在保持注入。按 Ctrl+C 结束（不会退出 Grok Bot）。");
       setInterval(async () => {
