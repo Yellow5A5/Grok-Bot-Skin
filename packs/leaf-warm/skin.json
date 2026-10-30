@@ -3,10 +3,10 @@
   "id": "leaf-warm",
   "name": "Leaf Warm",
   "nameZh": "木叶暖",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "grok-bot-skin",
   "license": "CC-BY-4.0",
-  "description": "浅色卡通忍者村：杏橙、嫩叶绿和灯笼暖光。明亮但偏柔，窗角有叶子、拉面和青蛙点缀。",
+  "description": "浅色卡通忍者村：鸣人和九尾各占一侧，中间留给聊天。护额、螺旋丸、拉面和青蛙点缀窗角。",
   "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
   "appearance": "light",
   "bot": {
@@ -16,7 +16,7 @@
   },
   "chrome": {
     "wallpaper": "assets/wallpaper.jpg",
-    "wallpaperOpacity": 0.4,
+    "wallpaperOpacity": 0.5,
     "tokens": {
       "text": "#4a3f34",
       "muted": "#8a7664",

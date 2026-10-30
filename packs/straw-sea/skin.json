@@ -3,10 +3,10 @@
   "id": "straw-sea",
   "name": "Straw Sea",
   "nameZh": "草帽海",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "grok-bot-skin",
   "license": "CC-BY-4.0",
-  "description": "浅色卡通航海：奶油、草帽金、珊瑚粉和海水蓝。明亮但不刺眼，窗角有帽子、波浪和星星点缀。",
+  "description": "浅色卡通航海：路飞和乔巴各占一侧，中间留出海面给聊天。草帽、通缉令、肉和波浪点缀窗角。",
   "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
   "appearance": "light",
   "bot": {
@@ -16,7 +16,7 @@
   },
   "chrome": {
     "wallpaper": "assets/wallpaper.jpg",
-    "wallpaperOpacity": 0.38,
+    "wallpaperOpacity": 0.5,
     "tokens": {
       "text": "#4a3d32",
       "muted": "#8a7364",
