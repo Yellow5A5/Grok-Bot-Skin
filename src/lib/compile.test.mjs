@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { compileOverlay } from "./compile.mjs";
+import { compileOverlay, injectExpression } from "./compile.mjs";
 import { getPack, listPacks } from "./pack.mjs";
 
 test("bundled packs load and compile", () => {
@@ -26,6 +26,7 @@ test("bundled packs load and compile", () => {
       assert.match(css, /file:/);
       assert.match(css, /--grok-skin-wallpaper:/);
     }
+    assert.match(css, /#grok-bot-skin-usage/);
   }
 });
 
@@ -34,6 +35,13 @@ test("paper-dawn is a light skin", () => {
   assert.equal(pack.appearance, "light");
   const css = compileOverlay(pack);
   assert.match(css, /color-scheme: light/);
+});
+
+test("injecting a skin also boots the usage HUD", () => {
+  const js = injectExpression("/*css*/", "straw-sea");
+  assert.match(js, /getCursorUsageSummary/);
+  assert.match(js, /getCursorUsageBreakdown/);
+  assert.match(js, /grok-bot-skin-usage/);
 });
 
 test("cartoon packs are light and paint window ornaments", () => {

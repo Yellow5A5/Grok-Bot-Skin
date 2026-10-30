@@ -1,5 +1,6 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { USAGE_HUD_CSS, usageHudBootSource, usageHudTeardownSource } from "./usage-hud.mjs";
 
 const TOKEN_MAP = {
   text: ["--cursor-base", "--sand-text-primary", "--sand-icon-primary"],
@@ -141,6 +142,8 @@ export function compileOverlay(pack, options = {}) {
     blocks.push(customCss);
   }
 
+  blocks.push(USAGE_HUD_CSS);
+
   return `${blocks.join("\n\n")}\n`;
 }
 
@@ -184,12 +187,14 @@ export function injectExpression(css, skinId) {
         "important",
       );
     }
+    ${usageHudBootSource()}
     return { ok: true, skin: ${JSON.stringify(skinId)}, bytes: el.textContent.length };
   })()`;
 }
 
 export function clearExpression() {
   return `(() => {
+    ${usageHudTeardownSource()}
     const el = document.getElementById("grok-bot-skin-overlay");
     if (el) el.remove();
     delete document.documentElement.dataset.grokBotSkin;
