@@ -112,9 +112,9 @@ export async function revealAvatar(pack) {
   return {
     avatar: pack.avatarAbs,
     steps: [
-      "在 Grok Bot 里打开这个 Bot 的对话",
-      "点顶部 Bot 名字，再点头像",
-      "选 Upload，把已选中的头像文件拖进去，然后 Set avatar",
+      "在 Grok Bot 里打开这个 Bot 的对话，点顶部名字",
+      "内置 Bot 会看到「创建副本」：先复制成你的 Bot，再打开那一份",
+      "点「编辑头像」→ Upload 已选中的图 →「设置头像」",
     ],
   };
 }

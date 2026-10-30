@@ -71,12 +71,13 @@ Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端�
 
 不要改 `/Applications/Grok Bot.app`：Developer ID 签名、公证、`ElectronAsarIntegrity`，一改就破校验，官方更新也会冲掉。
 
-## 头像（所有人都能用，会同步到手机）
+## 头像
 
-1. 工作室点「套用头像」，或 `npx grok-bot-skin avatar ink-night`
-2. 打开对应 Bot 的对话 → 点顶部名字 → 点头像 → **Upload** → 把 Finder 里选中的图拖进去 → **Set avatar**
+界面皮肤不会改 Grok Bot 里那个圆头像。头像是 Bot 自己的资料。
 
-也可以把皮肤包里的 `bot.generatePrompt` 贴到 **Generate** 页，让 Grok Bot 自己重画一张。
+点对话顶部名字，看到的 **创建副本** 是对的：内置或别人的 Bot 不能直接改头像，要先复制成你的 Bot。然后在你的那份上点 **编辑头像** → Upload → **设置头像**。设好的会跟着账号，手机上也能看到。
+
+图在每套皮肤的 `packs/<id>/assets/avatar.jpg`。工作室「套用头像」只是在 Finder 里选中这张图，方便你拖进官方编辑器。也可以在编辑头像页用 Generate，把皮肤包里的提示词贴进去。
 
 ## 分享给别人
 

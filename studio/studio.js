@@ -100,7 +100,7 @@ function paintDetail(pack) {
       <div class="swatches">${swatches}</div>
     </div>
     <div class="actions">
-      <button class="act primary" data-act="avatar">套用头像（官方 Upload）</button>
+      <button class="act primary" data-act="avatar">在 Finder 中拿出头像</button>
       <button class="act" data-act="chrome">套用界面 CSS</button>
       <button class="act" data-act="launch">启动 Grok Bot 并套上界面</button>
       <button class="act" data-act="export">导出可分享的 .grokskin.zip</button>
@@ -155,7 +155,7 @@ async function runAction(act, pack, button) {
     paintStatus();
     if (payload.avatar) {
       setNote(
-        `Finder 已选中头像。打开 Bot 详情 → 点头像 → Upload → Set avatar。\n${payload.avatar.avatar}`,
+        `Finder 已选中头像。内置 Bot 先「创建副本」，再在你的那份上点「编辑头像」→ Upload →「设置头像」。\n${payload.avatar.avatar}`,
       );
     } else if (payload.chrome?.skipped) {
       setNote(

@@ -39,7 +39,7 @@ Grok Bot 会把图裁成圆。按官方 Generate 约束来：
 - 形状清楚，颜色少
 - 不要字、logo、水印、界面元件
 
-把同一段提示词写进 `bot.generatePrompt`，别人不用你的文件也能生成接近的图。
+把同一段提示词写进 `bot.generatePrompt`，别人不用你的文件也能在「编辑头像」的 Generate 页生成接近的图。内置 Bot 要先「创建副本」才能改头像。
 
 ## 界面 token
 
