@@ -7,11 +7,14 @@
 1. **头像** — 正方形插画，走 Grok Bot 官方 Upload（或 Generate 提示词）。
 2. **界面** — 覆盖 Grok Bot 的 token，并把壁纸画在真正的窗口层 `.sand-shell` 上。
 
+日常用法是启动器记住上一套皮肤，菜单栏在五套之间切换。从 Dock 打开的官方 Grok Bot 没有调试端口，界面皮肤不会常驻，这是故意的。
+
 ```mermaid
 flowchart LR
   pack["skin.json + 图"] --> studio["皮肤工作室"]
   studio --> avatar["官方 Upload 头像"]
-  studio --> launch["launch 注入 CSS"]
+  launcher["启动器 / 菜单栏"] --> grok["带调试端口的 Grok Bot"]
+  grok --> css["CDP 注入 CSS"]
   pack --> zip[".grokskin.zip"]
   zip --> import["别人 import"]
 ```
@@ -20,14 +23,26 @@ flowchart LR
 
 需要 Node 22+（本机已可）。
 
+日常打开（记住上一套，一点即套上；若 Grok Bot 已在跑则直接换肤）：
+
 ```bash
-cd grok-bot-skin
-npm run studio
+npm run open
+# 或双击 scripts/Open Grok Bot.command
 ```
 
-或双击 `scripts/Open Skin Studio.command`。
+菜单栏显示当前皮肤，五个包来回切：
 
-工作室里可以预览五套自带皮肤，并把头像送到 Finder。
+```bash
+npm run menubar
+# 或双击 scripts/Show Skin Menu.command
+```
+
+预览、做包、改 token：
+
+```bash
+npm run studio
+# 或双击 scripts/Open Skin Studio.command
+```
 
 | id | 名字 | Appearance |
 |---|---|---|
@@ -37,7 +52,20 @@ npm run studio
 | `jade-grove` | 青玉林 | Dark |
 | `ember-forge` | 熔炉 | Dark |
 
+上次用的皮肤记在 `~/Library/Application Support/grok-bot-skin/active.json`。
+
 ## 套到自己的 Grok Bot 上
+
+### 界面（启动器）
+
+Grok Bot 没有官方主题 API。启动器会带上本机回环调试端口（`127.0.0.1:19222`）再注入 CSS，只改 token，不改 asar、不破签名。
+
+- 点启动器或菜单里的「打开并套上」：用上一套皮肤打开。
+- 若 Grok Bot 已用本启动器打开：菜单里点另一套会原地换肤。
+- 若 Grok Bot 是从 Dock 打开的（没有调试端口）：从启动器或菜单再打开时会先退出再带端口启动。这是你主动用启动器，不是后台劫持。
+- 从 Dock 重新打开官方图标后，界面皮肤会掉，头像不会掉。再用启动器打开即可。
+
+把 Settings → Appearance 调成皮肤要求的 Dark / Light。
 
 ### 头像（所有人都能用，会同步到手机）
 
@@ -45,19 +73,6 @@ npm run studio
 2. 打开对应 Bot 的对话 → 点顶部名字 → 点头像 → **Upload** → 把 Finder 里选中的图拖进去 → **Set avatar**
 
 也可以把皮肤包里的 `bot.generatePrompt` 贴到 **Generate** 页，让 Grok Bot 自己重画一张。
-
-### 界面颜色和壁纸（本机 CSS 覆盖）
-
-Grok Bot 没有官方主题 API。本工具用 Chromium 调试端口注入一份 CSS，只改 token，不改 asar、不破签名。
-
-```bash
-# 先完全退出 Grok Bot，再：
-npx grok-bot-skin launch ink-night
-```
-
-或在工作室点「启动 Grok Bot 并套上界面」。
-
-把 Settings → Appearance 调成皮肤要求的 Dark / Light。重启 Grok Bot 后界面皮肤会掉，再 `launch` 一次即可。头像是账号数据，不会掉。
 
 ## 分享给别人
 
@@ -89,12 +104,14 @@ npx grok-bot-skin studio
 ## 命令
 
 ```
+npx grok-bot-skin open [id]
+npx grok-bot-skin menubar
 npx grok-bot-skin studio
 npx grok-bot-skin list
 npx grok-bot-skin apply <id>
-npx grok-bot-skin launch <id>
+npx grok-bot-skin launch [id]
 npx grok-bot-skin avatar <id>
-npx grok-bot-skin chrome <id>
+npx grok-bot-skin chrome [id]
 npx grok-bot-skin clear
 npx grok-bot-skin pack <id>
 npx grok-bot-skin import <zip>
@@ -103,4 +120,4 @@ npx grok-bot-skin validate
 
 ## 为什么不改 Grok Bot.app
 
-应用带 `ElectronAsarIntegrity` 和代码签名。改 asar 会破校验，也没法跟着官方更新走。皮肤包 + 官方头像上传 + 可选 CSS 覆盖，才是可维护、可分发的做法。
+应用带 `ElectronAsarIntegrity` 和代码签名。改 asar 会破校验，也没法跟着官方更新走。皮肤包 + 官方头像上传 + 启动器注入 CSS，才是可维护、可分发的做法。

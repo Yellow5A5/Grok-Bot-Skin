@@ -1,4 +1,5 @@
 Grok Bot.app/
+macos/*.app
 .inspect/
 node_modules/
 dist/

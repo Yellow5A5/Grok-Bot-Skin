@@ -33,6 +33,37 @@ export async function grokBotStatus(port = DEBUG_PORT) {
   };
 }
 
+export async function quitGrokBot() {
+  try {
+    await execFileAsync("osascript", ["-e", 'tell application "Grok Bot" to quit'], {
+      timeout: 8000,
+    });
+  } catch {
+    try {
+      await execFileAsync("killall", ["Grok Bot"]);
+    } catch {
+      // Already gone.
+    }
+  }
+  const deadline = Date.now() + 12_000;
+  while (Date.now() < deadline) {
+    if (!(await grokBotProcessRunning())) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+  try {
+    await execFileAsync("killall", ["-9", "Grok Bot"]);
+  } catch {
+    // Ignore.
+  }
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  if (await grokBotProcessRunning()) {
+    throw new Error("无法退出已在运行的 Grok Bot，请先手动退出后再用启动器打开。");
+  }
+}
+
 export async function launchGrokBot({ port = DEBUG_PORT } = {}) {
   const app = findGrokBotApp();
   if (!app) {
@@ -44,7 +75,7 @@ export async function launchGrokBot({ port = DEBUG_PORT } = {}) {
   if (status.debug) return { app, launched: false, debug: true };
   if (status.running) {
     throw new Error(
-      "Grok Bot 已在运行，但没有打开皮肤调试端口。请先退出 Grok Bot，再运行 grok-bot-skin launch。",
+      "Grok Bot 已在运行，但没有打开皮肤调试端口。请用启动器或菜单栏打开（会先退出再带端口启动）。",
     );
   }
   await execFileAsync("open", ["-na", app, "--args", `--remote-debugging-port=${port}`]);
@@ -59,13 +90,7 @@ export async function applyChrome(pack, { port = DEBUG_PORT, persist = true } = 
   const css = compileOverlay(pack);
   const expression = injectExpression(css, pack.id);
   const results = await evaluateOnPages(expression, port, { persist });
-  writeActive({
-    skinId: pack.id,
-    version: pack.version,
-    source: pack.packDir,
-    appliedAt: new Date().toISOString(),
-    mode: "chrome",
-  });
+  rememberSkin(pack, { mode: "chrome" });
   return { cssBytes: css.length, results };
 }
 
@@ -94,13 +119,23 @@ export async function revealAvatar(pack) {
   };
 }
 
-function writeActive(payload) {
+export function writeActive(payload) {
   try {
     ensureUserRoot();
     fs.writeFileSync(activePath(), `${JSON.stringify(payload, null, 2)}\n`);
   } catch {
     // Local preference file is optional.
   }
+}
+
+export function rememberSkin(pack, extra = {}) {
+  writeActive({
+    skinId: pack.id,
+    version: pack.version,
+    source: pack.packDir,
+    appliedAt: new Date().toISOString(),
+    ...extra,
+  });
 }
 
 function copyToClipboard(text) {

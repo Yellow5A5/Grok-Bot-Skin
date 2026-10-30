@@ -8,9 +8,9 @@ import { exportPack } from "../src/lib/archive.mjs";
 import {
   applyChrome,
   grokBotStatus,
-  launchGrokBot,
   revealAvatar,
 } from "../src/lib/apply.mjs";
+import { wearSkin } from "../src/lib/wear.mjs";
 import { compileOverlay } from "../src/lib/compile.mjs";
 import { getPack, listPacks, PackError, publicPack } from "../src/lib/pack.mjs";
 import { STUDIO_PORT, studioDir } from "../src/lib/paths.mjs";
@@ -92,14 +92,14 @@ const server = http.createServer(async (request, response) => {
       if (mode === "chrome" || mode === "both") {
         if (status.debug) result.chrome = await applyChrome(pack);
         else if (body.launch) {
-          await launchGrokBot();
-          result.chrome = await applyChrome(pack);
-          result.status = await grokBotStatus();
+          const worn = await wearSkin(pack.id);
+          result.chrome = worn.chrome;
+          result.status = worn.status;
         } else {
           result.chrome = {
             skipped: true,
             reason: "debug-port-closed",
-            command: `npx grok-bot-skin launch ${pack.id}`,
+            command: `npx grok-bot-skin open ${pack.id}`,
           };
         }
       }

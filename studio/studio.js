@@ -12,7 +12,7 @@ let status = null;
 
 const STATE_LABEL = {
   "running-debug": "Grok Bot 已开调试端口，可直接套界面",
-  running: "Grok Bot 在运行，套界面前需要先退出再 launch",
+  running: "Grok Bot 在运行但未开调试端口；启动器会先退出再带端口打开",
   stopped: "Grok Bot 未运行，可用「启动并套上」",
 };
 

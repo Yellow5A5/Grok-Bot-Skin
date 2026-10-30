@@ -6,20 +6,28 @@ import {
   applyChrome,
   clearChrome,
   grokBotStatus,
-  launchGrokBot,
   revealAvatar,
 } from "../src/lib/apply.mjs";
 import { compileOverlay } from "../src/lib/compile.mjs";
 import { PackError, getPack, listPacks, loadPack, validatePack } from "../src/lib/pack.mjs";
+import {
+  openMenuBar,
+  resolvePack,
+  snapshotWithStatus,
+  wearSkin,
+} from "../src/lib/wear.mjs";
 
 const USAGE = `grok-bot-skin — Grok Bot 皮肤工具
 
 命令:
   studio                 打开皮肤工作室
+  open [id]              启动器：记住并套上上一套（或指定）皮肤
+  menubar                打开菜单栏，五个皮肤来回切
+  snapshot               当前皮肤与 Grok Bot 状态（JSON）
   list                   列出已安装皮肤
   apply <id>             套用头像（官方 Upload）+ 尝试套用界面
-  launch <id>            用皮肤调试端口启动 Grok Bot 并套上界面
-  chrome <id>            只注入界面 CSS（需要 launch 过）
+  launch [id]            用皮肤调试端口启动 Grok Bot 并套上界面
+  chrome [id]            只注入界面 CSS（需要调试端口已开）
   avatar <id>            只打开头像文件，供 Grok Bot 官方上传
   clear                  移除已注入的界面 CSS
   compile [id]           把皮肤编译成 overlay.css
@@ -51,6 +59,20 @@ async function main() {
       console.log(JSON.stringify(status, null, 2));
       return;
     }
+    case "snapshot": {
+      console.log(JSON.stringify(await snapshotWithStatus()));
+      return;
+    }
+    case "open": {
+      const result = await wearSkin(args[0]);
+      console.log(`已打开并套上 ${result.pack.displayName}`);
+      return;
+    }
+    case "menubar": {
+      const app = await openMenuBar();
+      console.log(`菜单栏已打开：${app}`);
+      return;
+    }
     case "apply": {
       const pack = requirePack(args[0]);
       await revealAvatar(pack);
@@ -76,25 +98,24 @@ async function main() {
       return;
     }
     case "chrome": {
-      const pack = requirePack(args[0]);
+      const pack = resolvePack(args[0]);
       const result = await applyChrome(pack);
       console.log(`界面 CSS 已注入（${result.cssBytes} bytes）`);
       return;
     }
     case "launch": {
-      const pack = requirePack(args[0]);
-      await launchGrokBot();
-      const result = await applyChrome(pack);
-      console.log(`Grok Bot 已套上 ${pack.displayName}（${result.cssBytes} bytes）`);
+      const packId = args.find((arg) => !arg.startsWith("--"));
+      const result = await wearSkin(packId);
+      console.log(`Grok Bot 已套上 ${result.pack.displayName}（${result.chrome.cssBytes} bytes）`);
       if (!args.includes("--chrome-only")) {
-        await revealAvatar(pack);
+        await revealAvatar(result.pack);
         console.log("头像已在 Finder 中选中，按官方 Upload 流程设置。");
       }
       if (args.includes("--once")) return;
       console.log("正在保持注入。按 Ctrl+C 结束（不会退出 Grok Bot）。");
       setInterval(async () => {
         try {
-          await applyChrome(pack, { persist: false });
+          await applyChrome(result.pack, { persist: false });
         } catch (error) {
           console.error(error.message);
         }

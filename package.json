@@ -9,6 +9,8 @@
   },
   "scripts": {
     "studio": "node bin/studio.mjs",
+    "open": "node bin/cli.mjs open",
+    "menubar": "node bin/cli.mjs menubar",
     "list": "node bin/cli.mjs list",
     "compile": "node bin/cli.mjs compile",
     "validate": "node bin/cli.mjs validate",

@@ -13,6 +13,7 @@ export const studioDir = path.join(kitRoot, "studio");
 export const schemaPath = path.join(kitRoot, "schema", "skin.schema.json");
 export const DEBUG_PORT = 19222;
 export const STUDIO_PORT = 4177;
+export const menuBarAppPath = path.join(kitRoot, "macos", "Grok Bot Skin.app");
 
 export function userRoot() {
   if (process.platform === "darwin") {
