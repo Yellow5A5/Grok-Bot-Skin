@@ -107,21 +107,13 @@ npx grok-bot-skin studio
 
 ## 命令
 
+日常只用这三个：
+
+```bash
+npm run menubar   # 菜单栏：换肤、登录启动、Dock 跟随
+npm run open      # 菜单栏没开时，打开 Grok Bot 并套上上一套
+npm run studio    # 预览、套头像、做包
 ```
-npx grok-bot-skin menubar
-npx grok-bot-skin open [id]
-npx grok-bot-skin follow on|off
-npx grok-bot-skin login on|off
-npx grok-bot-skin studio
-npx grok-bot-skin list
-npx grok-bot-skin status
-npx grok-bot-skin apply <id>
-npx grok-bot-skin launch [id]
-npx grok-bot-skin chrome [id]
-npx grok-bot-skin avatar <id>
-npx grok-bot-skin clear
-npx grok-bot-skin pack <id>
-npx grok-bot-skin import <zip>
-npx grok-bot-skin validate
-npx grok-bot-skin compile [id]
-```
+
+做包、导入写在上面两节。其余给调试用，`npx grok-bot-skin` 会列出。
+
