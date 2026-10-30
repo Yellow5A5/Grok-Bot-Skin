@@ -12,6 +12,7 @@ import {
 } from "./apply.mjs";
 import { getPack, listPacks } from "./pack.mjs";
 import { kitRoot, menuBarAppPath } from "./paths.mjs";
+import { readPrefs } from "./prefs.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -45,6 +46,7 @@ export function snapshot() {
     kitRoot,
     activeId: pack?.id ?? null,
     activeName: pack?.displayName ?? "",
+    prefs: readPrefs(),
     packs: packs.map((item) => ({
       id: item.id,
       name: item.displayName,
@@ -84,6 +86,12 @@ export async function openMenuBar() {
   }
   if (!fs.existsSync(binary)) {
     throw new Error("菜单栏应用没有编译成功。请确认已安装 Xcode Command Line Tools。");
+  }
+  try {
+    await execFileAsync("killall", ["Grok Bot Skin"]);
+    await new Promise((resolve) => setTimeout(resolve, 300));
+  } catch {
+    // Not running.
   }
   await execFileAsync("open", [menuBarAppPath]);
   return menuBarAppPath;

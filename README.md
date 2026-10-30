@@ -7,7 +7,7 @@
 1. **头像** — 正方形插画，走 Grok Bot 官方 Upload（或 Generate 提示词）。
 2. **界面** — 覆盖 Grok Bot 的 token，并把壁纸画在真正的窗口层 `.sand-shell` 上。
 
-日常用法是启动器记住上一套皮肤，菜单栏在五套之间切换。从 Dock 打开的官方 Grok Bot 没有调试端口，界面皮肤不会常驻，这是故意的。
+日常用法是启动器记住上一套皮肤，菜单栏在五套之间切换。不修改官方 `Grok Bot.app`。菜单栏常驻后，从官方 Dock 图标打开也会套上上一套皮肤：发现没有调试端口就先退出再带端口打开。
 
 ```mermaid
 flowchart LR
@@ -62,8 +62,9 @@ Grok Bot 没有官方主题 API。启动器会带上本机回环调试端口（`
 
 - 点启动器或菜单里的「打开并套上」：用上一套皮肤打开。
 - 若 Grok Bot 已用本启动器打开：菜单里点另一套会原地换肤。
-- 若 Grok Bot 是从 Dock 打开的（没有调试端口）：从启动器或菜单再打开时会先退出再带端口启动。这是你主动用启动器，不是后台劫持。
-- 从 Dock 重新打开官方图标后，界面皮肤会掉，头像不会掉。再用启动器打开即可。
+- 菜单栏打开且勾选「官方 Dock 打开也套皮肤」时：点官方 Dock 图标也会被带上调试端口并套上上一套皮肤。这不是改官方包，只是菜单栏跟着那次启动。
+- 关掉该选项后，官方 Dock 图标又会打开未套皮肤的 Grok Bot。
+- 不要改 `/Applications/Grok Bot.app`：它有 Developer ID 签名、公证和 `ElectronAsarIntegrity`，一改就破校验，官方更新也会冲掉。
 
 把 Settings → Appearance 调成皮肤要求的 Dark / Light。
 
@@ -106,6 +107,8 @@ npx grok-bot-skin studio
 ```
 npx grok-bot-skin open [id]
 npx grok-bot-skin menubar
+npx grok-bot-skin follow on
+npx grok-bot-skin login on
 npx grok-bot-skin studio
 npx grok-bot-skin list
 npx grok-bot-skin apply <id>

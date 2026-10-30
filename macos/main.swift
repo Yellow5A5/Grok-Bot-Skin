@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import ServiceManagement
 
 struct Snapshot: Codable {
   var kitRoot: String
@@ -7,6 +8,15 @@ struct Snapshot: Codable {
   var activeName: String
   var packs: [Pack]
   var status: Status
+  var prefs: Prefs?
+
+  var followOfficialLaunch: Bool { prefs?.followOfficialLaunch ?? true }
+  var openAtLogin: Bool { prefs?.openAtLogin ?? true }
+
+  struct Prefs: Codable {
+    var followOfficialLaunch: Bool?
+    var openAtLogin: Bool?
+  }
 
   struct Pack: Codable {
     var id: String
@@ -49,6 +59,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
   private let menu = NSMenu()
   private var lastDebug = false
   private var applying = false
+  private var lastFollowAttempt = Date.distantPast
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     if let button = statusItem.button {
@@ -62,6 +73,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     statusItem.menu = menu
     rebuildMenu(snapshot: nil)
     refreshTitle()
+    if let snap = loadSnapshot() {
+      syncLoginItem(enabled: snap.openAtLogin)
+    }
     Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
       self?.onTick()
     }
@@ -90,20 +104,47 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     NSApp.terminate(nil)
   }
 
+  @objc private func toggleFollow(_ sender: Any?) {
+    let current = loadSnapshot()?.followOfficialLaunch ?? true
+    runInBackground { try self.runNode(["follow", current ? "off" : "on"]) }
+  }
+
+  @objc private func toggleLogin(_ sender: Any?) {
+    let current = loadSnapshot()?.openAtLogin ?? true
+    runInBackground {
+      let output = try self.runNode(["login", current ? "off" : "on"])
+      self.syncLoginItem(enabled: !current)
+      return output
+    }
+  }
+
   private func onTick() {
     DispatchQueue.global(qos: .utility).async { [weak self] in
       guard let self else { return }
       guard let snap = self.loadSnapshot() else { return }
       let debug = snap.status.debug
-      let shouldApply = debug && !self.lastDebug && !self.applying
-      self.lastDebug = debug
-      if shouldApply, let id = snap.activeId {
+      if snap.followOfficialLaunch,
+         snap.status.running,
+         !debug,
+         !self.applying,
+         Date().timeIntervalSince(self.lastFollowAttempt) > 15
+      {
+        self.lastFollowAttempt = Date()
+        self.applying = true
+        _ = try? self.runNode(["open"])
+        self.applying = false
+      }
+      var latest = snap
+      if let current = self.loadSnapshot() { latest = current }
+      let shouldApply = latest.status.debug && !self.lastDebug && !self.applying
+      self.lastDebug = latest.status.debug
+      if shouldApply, let id = latest.activeId {
         self.applying = true
         _ = try? self.runNode(["chrome", id])
         self.applying = false
       }
       DispatchQueue.main.async {
-        self.statusItem.button?.title = self.title(for: snap)
+        self.statusItem.button?.title = self.title(for: latest)
       }
     }
   }
@@ -164,6 +205,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     menu.addItem(.separator())
+    let follow = NSMenuItem(
+      title: "官方 Dock 打开也套皮肤",
+      action: #selector(toggleFollow(_:)),
+      keyEquivalent: ""
+    )
+    follow.target = self
+    follow.state = (snap?.followOfficialLaunch ?? true) ? .on : .off
+    menu.addItem(follow)
+    let login = NSMenuItem(
+      title: "登录时打开菜单栏",
+      action: #selector(toggleLogin(_:)),
+      keyEquivalent: ""
+    )
+    login.target = self
+    login.state = (snap?.openAtLogin ?? true) ? .on : .off
+    menu.addItem(login)
     let studio = NSMenuItem(title: "皮肤工作室", action: #selector(openStudio(_:)), keyEquivalent: "")
     studio.target = self
     menu.addItem(studio)
@@ -287,5 +344,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
       return nil
     }
     return nil
+  }
+
+  private func syncLoginItem(enabled: Bool) {
+    guard #available(macOS 13.0, *) else { return }
+    do {
+      if enabled {
+        try SMAppService.mainApp.register()
+      } else if SMAppService.mainApp.status == .enabled {
+        try SMAppService.mainApp.unregister()
+      }
+    } catch {
+      // The user can deny the login-item prompt; the menu toggle still stores the pref.
+    }
   }
 }

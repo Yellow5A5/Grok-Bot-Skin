@@ -7,6 +7,8 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
 cp "$ROOT/macos/Info.plist" "$APP/Contents/Info.plist"
 swiftc -O -parse-as-library \
+  -framework AppKit \
+  -framework ServiceManagement \
   -o "$BIN" \
   "$ROOT/macos/main.swift"
 echo "built $APP"

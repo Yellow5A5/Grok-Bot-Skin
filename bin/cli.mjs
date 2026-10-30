@@ -10,6 +10,7 @@ import {
 } from "../src/lib/apply.mjs";
 import { compileOverlay } from "../src/lib/compile.mjs";
 import { PackError, getPack, listPacks, loadPack, validatePack } from "../src/lib/pack.mjs";
+import { parseOnOff, writePrefs } from "../src/lib/prefs.mjs";
 import {
   openMenuBar,
   resolvePack,
@@ -24,6 +25,8 @@ const USAGE = `grok-bot-skin — Grok Bot 皮肤工具
   open [id]              启动器：记住并套上上一套（或指定）皮肤
   menubar                打开菜单栏，五个皮肤来回切
   snapshot               当前皮肤与 Grok Bot 状态（JSON）
+  follow [on|off]        官方 Dock 打开时也套皮肤（需菜单栏在跑）
+  login [on|off]         登录时打开菜单栏
   list                   列出已安装皮肤
   apply <id>             套用头像（官方 Upload）+ 尝试套用界面
   launch [id]            用皮肤调试端口启动 Grok Bot 并套上界面
@@ -71,6 +74,24 @@ async function main() {
     case "menubar": {
       const app = await openMenuBar();
       console.log(`菜单栏已打开：${app}`);
+      return;
+    }
+    case "follow": {
+      const prefs = writePrefs({ followOfficialLaunch: parseOnOff(args[0]) });
+      console.log(
+        prefs.followOfficialLaunch
+          ? "已打开：从官方 Dock 图标启动时也会套上上一套皮肤（菜单栏需要在跑）。"
+          : "已关闭：只有启动器或菜单栏会套皮肤。",
+      );
+      return;
+    }
+    case "login": {
+      const prefs = writePrefs({ openAtLogin: parseOnOff(args[0]) });
+      console.log(
+        prefs.openAtLogin
+          ? "已打开：登录时启动皮肤菜单栏。"
+          : "已关闭：登录时不自动打开菜单栏。",
+      );
       return;
     }
     case "apply": {

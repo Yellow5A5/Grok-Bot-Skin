@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { parseOnOff } from "./prefs.mjs";
 import { preferredPack, resolvePack, snapshot } from "./wear.mjs";
 
 test("snapshot lists the five bundled skins with a preferred id", () => {
@@ -9,6 +10,14 @@ test("snapshot lists the five bundled skins with a preferred id", () => {
   assert.ok(snap.activeId);
   assert.ok(snap.packs.some((pack) => pack.selected && pack.id === snap.activeId));
   assert.ok(snap.kitRoot);
+  assert.equal(typeof snap.prefs.followOfficialLaunch, "boolean");
+  assert.equal(typeof snap.prefs.openAtLogin, "boolean");
+});
+
+test("parseOnOff accepts on/off tokens", () => {
+  assert.equal(parseOnOff("on"), true);
+  assert.equal(parseOnOff("off"), false);
+  assert.equal(parseOnOff("false"), false);
 });
 
 test("resolvePack falls back to the remembered or featured skin", () => {
