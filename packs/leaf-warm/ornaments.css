@@ -42,6 +42,7 @@ html[data-grok-bot-skin="leaf-warm"] .sand-kit-message-input-frame:not(#\#):not(
 }
 html[data-grok-bot-skin="leaf-warm"] .sand-message:not(#\#):not(#\#):not(#\#):not(#\#) {
   border-radius: 24px 24px 24px 10px !important;
-  background: color-mix(in srgb, #fffaf2 72%, transparent) !important;
+  color: var(--grok-skin-text) !important;
+  background: color-mix(in srgb, #fffaf2 94%, #fff4e6) !important;
   box-shadow: 0 4px 0 color-mix(in srgb, #8fbe8a 20%, transparent) !important;
 }

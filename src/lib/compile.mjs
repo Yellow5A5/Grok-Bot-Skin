@@ -123,17 +123,26 @@ export function compileOverlay(pack, options = {}) {
   background: ${mix("var(--grok-skin-sidebar)", 78)} !important;
   background-image: none !important;
   box-shadow: inset -1px 0 0 ${mix("var(--grok-skin-accent)", 28)} !important;
+  color: var(--grok-skin-text) !important;
 }`,
     `${chat} {
   background: transparent !important;
+  color: var(--grok-skin-text) !important;
 }`,
     `${prompt} {
-  background: ${mix("var(--grok-skin-pane)", 72)} !important;
+  background: ${mix("var(--grok-skin-pane)", 86)} !important;
+  color: var(--grok-skin-text) !important;
   box-shadow: inset 0 0 0 1px ${mix("var(--grok-skin-accent)", 22)} !important;
 }`,
+    `${message}, ${host} .sand-message-prose${BEAT}, ${host} .sand-message p${BEAT} {
+  color: var(--grok-skin-text) !important;
+}`,
     `${message} {
-  background: ${mix("var(--grok-skin-pane)", 48)} !important;
+  background: color-mix(in srgb, var(--grok-skin-pane) 92%, var(--grok-skin-chrome)) !important;
   background-image: none !important;
+}`,
+    `${host} .sand-agent-item${BEAT} {
+  color: var(--grok-skin-text) !important;
 }`,
   ];
 

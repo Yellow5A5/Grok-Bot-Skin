@@ -1,19 +1,28 @@
 export const USAGE_HUD_CSS = `html[data-grok-bot-skin] .sand-agents-sidebar {
   position: relative !important;
 }
+html[data-grok-bot-skin] .sand-agents-list__rows {
+  padding-bottom: 112px !important;
+  box-sizing: border-box !important;
+}
+html[data-grok-bot-skin] .sand-sidebar-resize-handle,
+html[data-grok-bot-skin] [aria-label="调整侧边栏大小"] {
+  z-index: 100 !important;
+  pointer-events: auto !important;
+}
 html[data-grok-bot-skin] #grok-bot-skin-usage {
   position: absolute !important;
   left: 10px !important;
-  right: 10px !important;
+  right: 18px !important;
   bottom: 64px !important;
   top: auto !important;
-  z-index: 60 !important;
+  z-index: 40 !important;
   width: auto !important;
   box-sizing: border-box !important;
   padding: 8px 10px 9px !important;
   border-radius: 14px !important;
   color: var(--grok-skin-text, inherit) !important;
-  background: color-mix(in srgb, var(--grok-skin-pane, #222) 88%, transparent) !important;
+  background: color-mix(in srgb, var(--grok-skin-pane, #222) 92%, var(--grok-skin-chrome, #111)) !important;
   box-shadow:
     0 4px 0 color-mix(in srgb, var(--grok-skin-accent, #888) 22%, transparent),
     inset 0 0 0 1px color-mix(in srgb, var(--grok-skin-accent, #888) 28%, transparent) !important;

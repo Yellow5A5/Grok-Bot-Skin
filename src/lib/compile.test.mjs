@@ -27,6 +27,10 @@ test("bundled packs load and compile", () => {
       assert.match(css, /--grok-skin-wallpaper:/);
     }
     assert.match(css, /#grok-bot-skin-usage/);
+    assert.match(css, /\.sand-message[^{]+\{[^}]*color: var\(--grok-skin-text\)/);
+    assert.match(css, /pointer-events: none/);
+    assert.match(css, /sand-sidebar-resize-handle/);
+    assert.match(css, /sand-agents-list__rows/);
   }
 });
 
