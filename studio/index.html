@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grok Bot 皮肤工作室</title>
+    <link rel="stylesheet" href="/studio.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <strong>Grok Bot 皮肤工作室</strong>
+        <span>Skin Kit</span>
+      </div>
+      <div id="status" class="status">正在检查 Grok Bot…</div>
+    </header>
+
+    <main class="layout">
+      <aside class="rail" id="rail" aria-label="皮肤列表"></aside>
+      <section class="stage">
+        <div class="device" id="device">
+          <div class="titlebar">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span id="device-title">Grok Bot</span>
+          </div>
+          <div class="workspace">
+            <div class="sidebar" id="sidebar"></div>
+            <div class="chat">
+              <div class="transcript" id="transcript"></div>
+              <div class="composer">给这个 Bot 发消息…</div>
+            </div>
+          </div>
+        </div>
+        <section class="detail" id="detail"></section>
+      </section>
+    </main>
+
+    <p class="footnote">
+      头像走 Grok Bot 官方 Upload。界面皮肤通过本地 CSS 覆盖 token，不修改 Grok Bot.app。
+    </p>
+    <script type="module" src="/studio.js"></script>
+  </body>
+</html>

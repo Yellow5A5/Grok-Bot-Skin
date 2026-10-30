@@ -1,0 +1,11 @@
+Grok Bot.app/
+.inspect/
+node_modules/
+dist/
+.DS_Store
+*.grokskin.zip
+packs/*/overlay.css
+/index.html
+/preload*.cjs
+/chunk-*.js
+/index-*.css

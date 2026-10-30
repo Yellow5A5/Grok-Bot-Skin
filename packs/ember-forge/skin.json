@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schema/skin.schema.json",
+  "id": "ember-forge",
+  "name": "Ember Forge",
+  "nameZh": "熔炉",
+  "version": "1.0.0",
+  "author": "grok-bot-skin",
+  "license": "CC-BY-4.0",
+  "description": "木炭底、铜火。暖色强调，适合动手干活的 Bot。",
+  "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
+  "appearance": "dark",
+  "bot": {
+    "avatar": "assets/avatar.jpg",
+    "accent": "#e07038",
+    "suggestedLabel": "Forge",
+    "generatePrompt": "Centered portrait of a stylized ember fox with copper-orange fur and a small chest glow, filling most of the square for a circular crop. Charcoal forge-shadow background edge to edge. Limited charcoal, copper, ember palette. No frame, no text, no logo."
+  },
+  "chrome": {
+    "wallpaper": "assets/wallpaper.jpg",
+    "wallpaperOpacity": 0.5,
+    "tokens": {
+      "text": "#f0e2d6",
+      "muted": "#b39482",
+      "chrome": "#100c0a",
+      "sidebar": "#16100e",
+      "pane": "#1b1411",
+      "accent": "#e07038",
+      "border": "#4a3226"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "grok-bot-skin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shareable Grok Bot skin packs, studio, and apply tools. Does not patch Grok Bot.app.",
+  "type": "module",
+  "bin": {
+    "grok-bot-skin": "./bin/cli.mjs"
+  },
+  "scripts": {
+    "studio": "node bin/studio.mjs",
+    "list": "node bin/cli.mjs list",
+    "compile": "node bin/cli.mjs compile",
+    "validate": "node bin/cli.mjs validate",
+    "test": "node --test src/lib/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}

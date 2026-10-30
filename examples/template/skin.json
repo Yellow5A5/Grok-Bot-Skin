@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schema/skin.schema.json",
+  "id": "my-skin",
+  "name": "My Skin",
+  "nameZh": "我的皮肤",
+  "version": "0.1.0",
+  "author": "your-name",
+  "license": "CC-BY-4.0",
+  "description": "Copy this folder into packs/ or ~/Library/Application Support/grok-bot-skin/packs/, rename the folder to match id, and replace the avatar.",
+  "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
+  "appearance": "dark",
+  "bot": {
+    "avatar": "assets/avatar.jpg",
+    "accent": "#c4a35a",
+    "suggestedLabel": "Custom",
+    "generatePrompt": "Centered emblem filling most of the square, details near the center for a circular crop. Simple uncluttered background edge to edge. Bold shapes, limited palette. No frame, no text, no logo."
+  },
+  "chrome": {
+    "tokens": {
+      "text": "#efe8d8",
+      "muted": "#9a917f",
+      "chrome": "#14120f",
+      "sidebar": "#1a1814",
+      "pane": "#1f1c18",
+      "accent": "#c4a35a",
+      "border": "#3a3428"
+    }
+  }
+}

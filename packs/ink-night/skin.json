@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schema/skin.schema.json",
+  "id": "ink-night",
+  "name": "Ink Night",
+  "nameZh": "水墨夜",
+  "version": "1.0.0",
+  "author": "grok-bot-skin",
+  "license": "CC-BY-4.0",
+  "description": "黑墨、牙色纸、antique gold。深色玻璃界面，适合夜间长时间对着 Bot 说话。",
+  "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
+  "appearance": "dark",
+  "bot": {
+    "avatar": "assets/avatar.jpg",
+    "accent": "#c9a227",
+    "suggestedLabel": "Ink",
+    "generatePrompt": "Centered portrait of a stylized ink-wash fox spirit, filling most of the square, details near the center for a circular crop. Black sumi-e fur, antique-gold crescent behind the head, ivory rice-paper background edge to edge. Limited palette, no frame, no text, no logo."
+  },
+  "chrome": {
+    "wallpaper": "assets/wallpaper.jpg",
+    "wallpaperOpacity": 0.58,
+    "tokens": {
+      "text": "#e8e0d0",
+      "muted": "#b7ad98",
+      "chrome": "#0e0d0b",
+      "sidebar": "#141210",
+      "pane": "#181614",
+      "accent": "#c9a227",
+      "border": "#3a3428"
+    }
+  }
+}

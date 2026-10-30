@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schema/skin.schema.json",
+  "id": "starlight",
+  "name": "Starlight",
+  "nameZh": "星光",
+  "version": "1.0.0",
+  "author": "grok-bot-skin",
+  "license": "CC-BY-4.0",
+  "description": "午夜蓝与电青。给偏工程、偏夜间的 Bot 用。",
+  "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
+  "appearance": "dark",
+  "bot": {
+    "avatar": "assets/avatar.jpg",
+    "accent": "#6ec8e6",
+    "suggestedLabel": "Star",
+    "generatePrompt": "Centered futuristic mascot: geometric star-comet creature with a round face and short pointed ears, filling most of the square for a circular crop. Midnight navy background edge to edge, electric cyan rim light. No frame, no text, no logo."
+  },
+  "chrome": {
+    "wallpaper": "assets/wallpaper.jpg",
+    "wallpaperOpacity": 0.55,
+    "tokens": {
+      "text": "#e6eefc",
+      "muted": "#8b97b3",
+      "chrome": "#07080d",
+      "sidebar": "#0c0e16",
+      "pane": "#10131c",
+      "accent": "#6ec8e6",
+      "border": "#243044"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schema/skin.schema.json",
+  "id": "jade-grove",
+  "name": "Jade Grove",
+  "nameZh": "青玉林",
+  "version": "1.0.0",
+  "author": "grok-bot-skin",
+  "license": "CC-BY-4.0",
+  "description": "青玉与雾林。深青绿底，薄荷高光，适合长期挂着的助手。",
+  "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
+  "appearance": "dark",
+  "bot": {
+    "avatar": "assets/avatar.jpg",
+    "accent": "#5fae8a",
+    "suggestedLabel": "Jade",
+    "generatePrompt": "Centered portrait of a stylized jade fox with smooth carved-stone fur, filling most of the square for a circular crop. Misty deep-teal dusk background edge to edge. Limited jade, teal, and mint palette. No frame, no text, no logo."
+  },
+  "chrome": {
+    "wallpaper": "assets/wallpaper.jpg",
+    "wallpaperOpacity": 0.52,
+    "tokens": {
+      "text": "#d5efe4",
+      "muted": "#86b3a3",
+      "chrome": "#0c1412",
+      "sidebar": "#101a17",
+      "pane": "#14201c",
+      "accent": "#5fae8a",
+      "border": "#234037"
+    }
+  }
+}

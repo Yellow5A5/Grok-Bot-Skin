@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grok-bot-skin.local/schema/skin.schema.json",
+  "title": "Grok Bot Skin Pack",
+  "description": "A shareable skin pack for Grok Bot. Avatar is applied through Grok Bot's official Upload tab. Chrome tokens are compiled to a CSS overlay.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "version", "appearance", "bot"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Stable pack id. Use the same string as the folder name."
+    },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "nameZh": { "type": "string", "maxLength": 80 },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-z0-9.]+)?$"
+    },
+    "author": { "type": "string" },
+    "license": { "type": "string", "default": "CC-BY-4.0" },
+    "description": { "type": "string", "maxLength": 500 },
+    "homepage": { "type": "string" },
+    "compatible": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "app": { "type": "string", "const": "Grok Bot" },
+        "minVersion": { "type": "string" }
+      }
+    },
+    "appearance": {
+      "type": "string",
+      "enum": ["dark", "light"],
+      "description": "Match Grok Bot Settings → Appearance to this value before applying chrome."
+    },
+    "bot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["avatar", "accent"],
+      "properties": {
+        "avatar": {
+          "type": "string",
+          "description": "Pack-relative path to a square image, < 25 MB. Centered subject; circular crop."
+        },
+        "accent": { "$ref": "#/$defs/hexColor" },
+        "suggestedName": { "type": "string" },
+        "suggestedLabel": { "type": "string" },
+        "generatePrompt": {
+          "type": "string",
+          "description": "Prompt for Grok Bot's built-in Generate avatar tab, so others can remake the picture."
+        }
+      }
+    },
+    "chrome": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "wallpaper": { "type": "string" },
+        "wallpaperOpacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "tokens": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "text": { "$ref": "#/$defs/hexColor" },
+            "muted": { "$ref": "#/$defs/hexColor" },
+            "chrome": { "$ref": "#/$defs/hexColor" },
+            "sidebar": { "$ref": "#/$defs/hexColor" },
+            "pane": { "$ref": "#/$defs/hexColor" },
+            "accent": { "$ref": "#/$defs/hexColor" },
+            "border": { "$ref": "#/$defs/hexColor" },
+            "extra": {
+              "type": "object",
+              "description": "Pass-through CSS custom properties, keys must start with --",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        },
+        "customCss": {
+          "type": "string",
+          "description": "Appended as-is after compiled tokens. Keep selectors conservative."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+    }
+  }
+}
