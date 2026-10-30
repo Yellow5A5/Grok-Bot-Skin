@@ -1,0 +1,30 @@
+{
+  "$schema": "../../schema/skin.schema.json",
+  "id": "leaf-warm",
+  "name": "Leaf Warm",
+  "nameZh": "木叶暖",
+  "version": "1.0.0",
+  "author": "grok-bot-skin",
+  "license": "CC-BY-4.0",
+  "description": "浅色卡通忍者村：杏橙、嫩叶绿和灯笼暖光。明亮但偏柔，窗角有叶子、拉面和青蛙点缀。",
+  "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
+  "appearance": "light",
+  "bot": {
+    "avatar": "assets/avatar.jpg",
+    "accent": "#e09a5a",
+    "suggestedLabel": "Leaf"
+  },
+  "chrome": {
+    "wallpaper": "assets/wallpaper.jpg",
+    "wallpaperOpacity": 0.4,
+    "tokens": {
+      "text": "#4a3f34",
+      "muted": "#8a7664",
+      "chrome": "#fff4e6",
+      "sidebar": "#ffe3c6",
+      "pane": "#fffaf2",
+      "accent": "#e09a5a",
+      "border": "#edcda8"
+    }
+  }
+}

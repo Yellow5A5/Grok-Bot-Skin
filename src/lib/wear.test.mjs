@@ -3,7 +3,7 @@ import test from "node:test";
 import { parseOnOff } from "./prefs.mjs";
 import { preferredPack, resolvePack, snapshot } from "./wear.mjs";
 
-test("snapshot lists the five bundled skins with a preferred id", () => {
+test("snapshot lists bundled skins with a preferred id", () => {
   const snap = snapshot();
   assert.equal(snap.packs.length >= 5, true);
   assert.equal(snap.packs[0].id, "ink-night");

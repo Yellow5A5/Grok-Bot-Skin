@@ -23,7 +23,7 @@ const USAGE = `grok-bot-skin — Grok Bot 皮肤工具
 命令:
   studio                 打开皮肤工作室
   open [id]              启动器：记住并套上上一套（或指定）皮肤
-  menubar                打开菜单栏，五个皮肤来回切
+  menubar                打开菜单栏，已安装皮肤来回切
   snapshot               当前皮肤与 Grok Bot 状态（JSON）
   follow [on|off]        官方 Dock 打开时也套皮肤（需菜单栏在跑）
   login [on|off]         登录时打开菜单栏

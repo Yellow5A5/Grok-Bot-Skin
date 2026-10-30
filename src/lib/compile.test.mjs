@@ -10,8 +10,10 @@ test("bundled packs load and compile", () => {
     "ember-forge",
     "ink-night",
     "jade-grove",
+    "leaf-warm",
     "paper-dawn",
     "starlight",
+    "straw-sea",
   ]);
   assert.equal(packs[0].id, "ink-night");
   for (const pack of packs) {
@@ -32,4 +34,16 @@ test("paper-dawn is a light skin", () => {
   assert.equal(pack.appearance, "light");
   const css = compileOverlay(pack);
   assert.match(css, /color-scheme: light/);
+});
+
+test("cartoon packs are light and paint window ornaments", () => {
+  for (const id of ["straw-sea", "leaf-warm"]) {
+    const pack = getPack(id);
+    assert.equal(pack.appearance, "light");
+    const css = compileOverlay(pack);
+    assert.match(css, /color-scheme: light/);
+    assert.match(css, /stickers\.svg/);
+    assert.match(css, /file:/);
+    assert.match(css, /border-radius/);
+  }
 });

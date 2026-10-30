@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <!-- top-left straw hat -->
+  <g transform="translate(36,28)">
+    <ellipse cx="54" cy="52" rx="52" ry="14" fill="#e8c56b" opacity=".95"/>
+    <ellipse cx="54" cy="38" rx="28" ry="22" fill="#f3d98a"/>
+    <ellipse cx="54" cy="44" rx="30" ry="8" fill="#d7a84e"/>
+    <path d="M26 44c8-6 18-8 28-8s20 2 28 8" stroke="#c9785c" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <!-- top-right compass -->
+  <g transform="translate(1478,40)">
+    <circle cx="40" cy="40" r="32" fill="#fff8ee" stroke="#e0b07a" stroke-width="4"/>
+    <circle cx="40" cy="40" r="6" fill="#e08a6a"/>
+    <path d="M40 16l8 24-8 8-8-8z" fill="#7eb8c9"/>
+    <path d="M40 64l-8-24 8-8 8 8z" fill="#e08a6a" opacity=".85"/>
+  </g>
+  <!-- bottom waves -->
+  <path d="M0 838c80-28 140 18 220 0s150-30 240 4 170 10 250-12 180-8 250 10 170 6 260-8 140 16 220 4v64H0z" fill="#9ed9c5" opacity=".55"/>
+  <path d="M0 860c90-20 150 12 230-2s160-22 250 6 180 8 250-8 190 4 270 8 180 4 250-6 140 10 200 2v38H0z" fill="#7eb8c9" opacity=".4"/>
+  <!-- bottom-left meat -->
+  <g transform="translate(28,730)">
+    <rect x="18" y="18" width="14" height="70" rx="7" fill="#e8c56b"/>
+    <ellipse cx="25" cy="18" rx="22" ry="18" fill="#e08a6a"/>
+    <ellipse cx="25" cy="18" rx="12" ry="9" fill="#f3b39a"/>
+  </g>
+  <!-- bottom-right starfish -->
+  <g transform="translate(1488,748)">
+    <path d="M40 8l8 24 26 2-20 16 6 24-20-14-20 14 6-24-20-16 26-2z" fill="#f3b39a" stroke="#e08a6a" stroke-width="2"/>
+  </g>
+  <!-- sparkles -->
+  <g fill="#fff8ee" opacity=".8">
+    <circle cx="210" cy="70" r="4"/>
+    <circle cx="1380" cy="120" r="3"/>
+    <circle cx="180" cy="820" r="3"/>
+    <circle cx="1420" cy="780" r="4"/>
+  </g>
+  <!-- tiny sail top center-left -->
+  <g transform="translate(220,36)" opacity=".9">
+    <path d="M8 48V8l32 20z" fill="#fff6ea" stroke="#e08a6a" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="6" y="8" width="4" height="48" rx="2" fill="#c9785c"/>
+  </g>
+</svg>

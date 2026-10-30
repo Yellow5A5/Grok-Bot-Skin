@@ -44,6 +44,11 @@ export function loadPack(jsonPath) {
   const wallpaperAbs = raw.chrome?.wallpaper
     ? resolveAsset(packDir, raw.chrome.wallpaper)
     : null;
+  const ornamentsPath = path.join(packDir, "ornaments.css");
+  let customCss = raw.chrome?.customCss || "";
+  if (fs.existsSync(ornamentsPath)) {
+    customCss = `${customCss}\n${fs.readFileSync(ornamentsPath, "utf8")}`.trim();
+  }
   return {
     ...raw,
     packDir,
@@ -52,6 +57,9 @@ export function loadPack(jsonPath) {
     wallpaperAbs,
     displayName: raw.nameZh || raw.name,
     issues,
+    chrome: raw.chrome
+      ? { ...raw.chrome, customCss: customCss || undefined }
+      : raw.chrome,
   };
 }
 
@@ -140,7 +148,15 @@ export function listPacks() {
     const pack = loadPackQuietly(jsonPath, "user");
     if (pack) byId.set(pack.id, pack);
   }
-  const featured = ["ink-night", "paper-dawn", "starlight", "jade-grove", "ember-forge"];
+  const featured = [
+    "ink-night",
+    "paper-dawn",
+    "straw-sea",
+    "leaf-warm",
+    "starlight",
+    "jade-grove",
+    "ember-forge",
+  ];
   return [...byId.values()].sort((a, b) => {
     const ia = featured.indexOf(a.id);
     const ib = featured.indexOf(b.id);

@@ -1,0 +1,47 @@
+/* leaf-warm window ornaments */
+html[data-grok-bot-skin="leaf-warm"] .sand-shell:not(#\#):not(#\#):not(#\#):not(#\#) {
+  position: relative !important;
+  overflow: hidden !important;
+}
+html[data-grok-bot-skin="leaf-warm"] .sand-shell:not(#\#):not(#\#):not(#\#):not(#\#)::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 50 !important;
+  background: url("{{asset:assets/stickers.svg}}") center / cover no-repeat !important;
+  opacity: 0.9;
+}
+html[data-grok-bot-skin="leaf-warm"] .sand-agents-sidebar:not(#\#):not(#\#):not(#\#):not(#\#) {
+  border-radius: 0 32px 32px 0 !important;
+  background-image:
+    radial-gradient(circle at 18% 12%, color-mix(in srgb, #f4c48a 40%, transparent) 0 20px, transparent 21px),
+    radial-gradient(circle at 78% 84%, color-mix(in srgb, #8fbe8a 28%, transparent) 0 26px, transparent 27px),
+    repeating-linear-gradient(
+      -18deg,
+      color-mix(in srgb, #e09a5a 12%, transparent) 0 8px,
+      transparent 8px 20px
+    ) !important;
+  box-shadow:
+    inset -12px 0 0 color-mix(in srgb, #8fbe8a 30%, transparent),
+    inset -1px 0 0 color-mix(in srgb, #e09a5a 32%, transparent) !important;
+}
+html[data-grok-bot-skin="leaf-warm"] .sand-chat:not(#\#):not(#\#):not(#\#):not(#\#),
+html[data-grok-bot-skin="leaf-warm"] .sand-chat-stage:not(#\#):not(#\#):not(#\#):not(#\#) {
+  background:
+    radial-gradient(circle at 88% 10%, color-mix(in srgb, #f4c48a 28%, transparent), transparent 30%),
+    radial-gradient(circle at 12% 90%, color-mix(in srgb, #8fbe8a 18%, transparent), transparent 26%) !important;
+}
+html[data-grok-bot-skin="leaf-warm"] .sand-prompt-shell:not(#\#):not(#\#):not(#\#):not(#\#),
+html[data-grok-bot-skin="leaf-warm"] .sand-kit-message-input-frame:not(#\#):not(#\#):not(#\#):not(#\#) {
+  border-radius: 30px !important;
+  background: color-mix(in srgb, #fffaf2 84%, transparent) !important;
+  box-shadow:
+    0 8px 0 color-mix(in srgb, #e09a5a 28%, transparent),
+    inset 0 0 0 2px color-mix(in srgb, #8fbe8a 34%, transparent) !important;
+}
+html[data-grok-bot-skin="leaf-warm"] .sand-message:not(#\#):not(#\#):not(#\#):not(#\#) {
+  border-radius: 24px 24px 24px 10px !important;
+  background: color-mix(in srgb, #fffaf2 72%, transparent) !important;
+  box-shadow: 0 4px 0 color-mix(in srgb, #8fbe8a 20%, transparent) !important;
+}

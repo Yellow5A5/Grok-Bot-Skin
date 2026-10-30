@@ -1,3 +1,4 @@
+import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 const TOKEN_MAP = {
@@ -33,6 +34,16 @@ const BEAT = ":not(#\\#):not(#\\#):not(#\\#):not(#\\#)";
 
 function fileUrl(absPath) {
   return pathToFileURL(absPath).href;
+}
+
+function applyAssetTokens(css, pack) {
+  if (!css || !pack?.packDir) return css ? css.trim() : "";
+  const root = path.resolve(pack.packDir);
+  return css.replace(/\{\{asset:([^}]+)\}\}/g, (_, rel) => {
+    const abs = path.resolve(pack.packDir, rel.trim());
+    if (abs !== root && !abs.startsWith(root + path.sep)) return "";
+    return fileUrl(abs);
+  }).trim();
 }
 
 function mix(color, percent) {
@@ -125,8 +136,9 @@ export function compileOverlay(pack, options = {}) {
 }`,
   ];
 
-  if (pack.chrome?.customCss) {
-    blocks.push(pack.chrome.customCss.trim());
+  const customCss = applyAssetTokens(pack.chrome?.customCss, pack);
+  if (customCss) {
+    blocks.push(customCss);
   }
 
   return `${blocks.join("\n\n")}\n`;

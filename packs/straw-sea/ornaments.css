@@ -1,0 +1,47 @@
+/* straw-sea window ornaments */
+html[data-grok-bot-skin="straw-sea"] .sand-shell:not(#\#):not(#\#):not(#\#):not(#\#) {
+  position: relative !important;
+  overflow: hidden !important;
+}
+html[data-grok-bot-skin="straw-sea"] .sand-shell:not(#\#):not(#\#):not(#\#):not(#\#)::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 50 !important;
+  background: url("{{asset:assets/stickers.svg}}") center / cover no-repeat !important;
+  opacity: 0.92;
+}
+html[data-grok-bot-skin="straw-sea"] .sand-agents-sidebar:not(#\#):not(#\#):not(#\#):not(#\#) {
+  border-radius: 0 28px 28px 0 !important;
+  background-image:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, #f3b39a 34%, transparent) 0 18px, transparent 19px),
+    radial-gradient(circle at 82% 88%, color-mix(in srgb, #7eb8c9 30%, transparent) 0 22px, transparent 23px),
+    repeating-linear-gradient(
+      180deg,
+      color-mix(in srgb, #9ed9c5 16%, transparent) 0 10px,
+      transparent 10px 22px
+    ) !important;
+  box-shadow:
+    inset -10px 0 0 color-mix(in srgb, #e8c56b 38%, transparent),
+    inset -1px 0 0 color-mix(in srgb, #e08a6a 28%, transparent) !important;
+}
+html[data-grok-bot-skin="straw-sea"] .sand-chat:not(#\#):not(#\#):not(#\#):not(#\#),
+html[data-grok-bot-skin="straw-sea"] .sand-chat-stage:not(#\#):not(#\#):not(#\#):not(#\#) {
+  background:
+    radial-gradient(circle at 92% 8%, color-mix(in srgb, #fff6ea 55%, transparent), transparent 28%),
+    radial-gradient(circle at 8% 92%, color-mix(in srgb, #9ed9c5 22%, transparent), transparent 26%) !important;
+}
+html[data-grok-bot-skin="straw-sea"] .sand-prompt-shell:not(#\#):not(#\#):not(#\#):not(#\#),
+html[data-grok-bot-skin="straw-sea"] .sand-kit-message-input-frame:not(#\#):not(#\#):not(#\#):not(#\#) {
+  border-radius: 28px !important;
+  background: color-mix(in srgb, #fffaf3 82%, transparent) !important;
+  box-shadow:
+    0 8px 0 color-mix(in srgb, #e8c56b 35%, transparent),
+    inset 0 0 0 2px color-mix(in srgb, #e08a6a 28%, transparent) !important;
+}
+html[data-grok-bot-skin="straw-sea"] .sand-message:not(#\#):not(#\#):not(#\#):not(#\#) {
+  border-radius: 22px !important;
+  background: color-mix(in srgb, #fffaf3 70%, transparent) !important;
+  box-shadow: 0 4px 0 color-mix(in srgb, #f3b39a 22%, transparent) !important;
+}
