@@ -26,7 +26,7 @@
 
 ## 安装
 
-macOS、Node 22+，本机已装 Grok Bot。
+需要 macOS 13+、Node 22+、Xcode Command Line Tools，以及 `/Applications` 里的 Grok Bot。脚本不会代装这些。
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Yellow5A5/Grok-Bot-Skin/main/scripts/install.sh | bash

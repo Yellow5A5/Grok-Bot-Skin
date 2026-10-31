@@ -26,7 +26,7 @@ Ink Night, Avenger Neon, and Jade Grove need **Dark**. Straw Sea and Leaf Warm n
 
 ## Install
 
-macOS, Node 22+, Grok Bot already installed.
+Needs macOS 13+, Node 22+, Xcode Command Line Tools, and Grok Bot in `/Applications`. The script does not install those.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Yellow5A5/Grok-Bot-Skin/main/scripts/install.sh | bash
