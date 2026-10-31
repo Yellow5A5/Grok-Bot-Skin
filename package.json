@@ -5,9 +5,9 @@
   "description": "Shareable Grok Bot skin packs, studio, and apply tools. Does not patch Grok Bot.app.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Acropolis/grok-bot-skin.git"
+    "url": "git+https://github.com/Yellow5A5/Grok-Bot-Skin.git"
   },
-  "homepage": "https://github.com/Acropolis/grok-bot-skin",
+  "homepage": "https://github.com/Yellow5A5/Grok-Bot-Skin",
   "keywords": [
     "grok-bot",
     "theme",

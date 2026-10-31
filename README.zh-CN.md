@@ -29,7 +29,7 @@
 macOS、Node 22+，本机已装 Grok Bot。
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Acropolis/grok-bot-skin/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Yellow5A5/Grok-Bot-Skin/main/scripts/install.sh | bash
 ```
 
 脚本会把工具复制到 `~/Library/Application Support/grok-bot-skin/app` 并打开菜单栏。若已经有一份仓库目录，执行 `./scripts/install.sh`（或双击 `scripts/Install Grok Bot Skin.command`）效果相同。

@@ -1,13 +1,11 @@
 #!/bin/bash
 # Copy this kit into Application Support and start the menu bar.
 #
-#   curl -fsSL https://raw.githubusercontent.com/Acropolis/grok-bot-skin/main/scripts/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/Yellow5A5/Grok-Bot-Skin/main/scripts/install.sh | bash
 #   ./scripts/install.sh
-#
-# Change DEFAULT_REPO if the GitHub path is not Acropolis/grok-bot-skin.
 set -euo pipefail
 
-DEFAULT_REPO="https://github.com/Acropolis/grok-bot-skin"
+DEFAULT_REPO="https://github.com/Yellow5A5/Grok-Bot-Skin"
 DEST="${GROK_BOT_SKIN_HOME:-$HOME/Library/Application Support/grok-bot-skin/app}"
 REPO="${GROK_BOT_SKIN_REPO:-$DEFAULT_REPO}"
 
@@ -16,9 +14,9 @@ usage() {
 Install Grok Bot Skin into ~/Library/Application Support/grok-bot-skin/app
 and open the menu bar extra.
 
-  curl -fsSL https://raw.githubusercontent.com/Acropolis/grok-bot-skin/main/scripts/install.sh | bash
+  curl -fsSL https://raw.githubusercontent.com/Yellow5A5/Grok-Bot-Skin/main/scripts/install.sh | bash
   ./scripts/install.sh
-  ./scripts/install.sh --repo https://github.com/<owner>/grok-bot-skin
+  ./scripts/install.sh --repo https://github.com/Yellow5A5/Grok-Bot-Skin
 
 Needs macOS, Node 22+, and Xcode Command Line Tools. Does not modify Grok Bot.app.
 EOF
