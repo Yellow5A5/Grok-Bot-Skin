@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { localizedPackName } from "./pack.mjs";
 import { parseLocale, parseOnOff } from "./prefs.mjs";
 import { preferredPack, resolvePack, snapshot } from "./wear.mjs";
 
@@ -35,5 +36,7 @@ test("resolvePack falls back to the remembered or featured skin", () => {
   const named = resolvePack("avenger-neon");
   assert.equal(named.id, "avenger-neon");
   assert.equal(named.appearance, "dark");
-  assert.match(named.displayName, /复联霓|Avenger/);
+  assert.match(named.displayName, /Avenger/);
+  assert.equal(localizedPackName(named, "en"), "Avenger Neon");
+  assert.equal(localizedPackName(named, "zh"), "复联霓");
 });

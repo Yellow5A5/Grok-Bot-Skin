@@ -13,6 +13,7 @@ import { PackError, getPack, listPacks, loadPack, validatePack } from "../src/li
 import { parseLocale, parseOnOff, writePrefs } from "../src/lib/prefs.mjs";
 import {
   openMenuBar,
+  openSkinStudio,
   resolvePack,
   snapshotWithStatus,
   wearSkin,
@@ -21,7 +22,8 @@ import {
 const USAGE = `grok-bot-skin — Grok Bot 皮肤工具
 
 命令:
-  studio                 打开皮肤工作室
+  studio                 打开皮肤工作室（浏览器）
+  serve-studio           仅启动工作室服务
   open [id]              启动器：记住并套上上一套（或指定）皮肤
   menubar                打开菜单栏，并套上上一套皮肤
   snapshot               当前皮肤与 Grok Bot 状态（JSON）
@@ -49,7 +51,12 @@ async function main() {
     return;
   }
   switch (command) {
-    case "studio":
+    case "studio": {
+      const href = await openSkinStudio();
+      console.log(`Skin Studio  ${href}`);
+      return;
+    }
+    case "serve-studio":
       await import("./studio.mjs");
       return;
     case "list":

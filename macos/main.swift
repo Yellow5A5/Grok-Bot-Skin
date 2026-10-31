@@ -51,11 +51,14 @@ struct MenuCopy {
   var follow: String { zh ? "官方 Dock 打开也套皮肤" : "Follow official Dock launches" }
   var usage: String { zh ? "显示订阅用量" : "Show usage chip" }
   var login: String { zh ? "登录时打开菜单栏" : "Open menu bar at login" }
-  var language: String { "中文" }
+  var language: String { zh ? "语言" : "Language" }
+  var english: String { "English" }
+  var chinese: String { "中文" }
   var studio: String { zh ? "皮肤工作室" : "Skin Studio" }
   var quit: String { zh ? "退出菜单栏" : "Quit menu bar" }
   var headerUnknown: String { zh ? "无法读取皮肤状态" : "Can't read skin status" }
   var applyFailed: String { zh ? "套皮肤失败" : "Could not apply skin" }
+  var commandFailed: String { zh ? "操作失败" : "Something went wrong" }
   var nodeMissing: String {
     zh
       ? "找不到 node。请安装 Node.js，或把它放到 /opt/homebrew/bin。"
@@ -144,9 +147,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
   }
 
   @objc private func openStudio(_ sender: Any?) {
-    DispatchQueue.global(qos: .utility).async {
-      _ = try? self.runNode(["studio"])
-    }
+    runInBackground { try self.runNode(["studio"]) }
   }
 
   @objc private func quitMenu(_ sender: Any?) {
@@ -172,9 +173,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     runInBackground { try self.runNode(["usage", current ? "off" : "on"]) }
   }
 
-  @objc private func toggleLocale(_ sender: Any?) {
+  @objc private func chooseLocale(_ sender: NSMenuItem) {
+    guard let next = sender.representedObject as? String else { return }
     let current = loadSnapshot()?.locale ?? "en"
-    runInBackground { try self.runNode(["lang", current == "zh" ? "en" : "zh"]) }
+    if next == current { return }
+    runInBackground { try self.runNode(["lang", next]) }
   }
 
   private func onTick() {
@@ -281,13 +284,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     login.target = self
     login.state = (snap?.openAtLogin ?? true) ? .on : .off
     menu.addItem(login)
-    let language = NSMenuItem(
-      title: copy.language,
-      action: #selector(toggleLocale(_:)),
-      keyEquivalent: ""
-    )
-    language.target = self
-    language.state = copy.zh ? .on : .off
+    let language = NSMenuItem(title: copy.language, action: nil, keyEquivalent: "")
+    let langMenu = NSMenu()
+    for option in [("en", copy.english), ("zh", copy.chinese)] {
+      let item = NSMenuItem(
+        title: option.1,
+        action: #selector(chooseLocale(_:)),
+        keyEquivalent: ""
+      )
+      item.target = self
+      item.representedObject = option.0
+      item.state = (snap?.locale ?? "en") == option.0 ? .on : .off
+      langMenu.addItem(item)
+    }
+    language.submenu = langMenu
     menu.addItem(language)
     let studio = NSMenuItem(title: copy.studio, action: #selector(openStudio(_:)), keyEquivalent: "")
     studio.target = self
@@ -325,7 +335,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
           NSApp.activate(ignoringOtherApps: true)
           let alert = NSAlert()
           alert.alertStyle = .warning
-          alert.messageText = MenuCopy(self?.loadSnapshot()?.locale ?? "en").applyFailed
+          alert.messageText = MenuCopy(self?.loadSnapshot()?.locale ?? "en").commandFailed
           alert.informativeText = error.localizedDescription
           alert.runModal()
         }

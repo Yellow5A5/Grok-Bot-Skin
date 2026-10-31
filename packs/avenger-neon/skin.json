@@ -7,6 +7,7 @@
   "author": "grok-bot-skin",
   "license": "CC-BY-4.0",
   "description": "赛博朋克夜城：同心能量环与红金盔影，品红与电青描边。深色 Appearance 下用。粉丝向原创插画，不是官方素材。",
+  "descriptionEn": "Cyberpunk night city: energy rings and a red-gold helm. Fan-style art, not official assets.",
   "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
   "appearance": "dark",
   "bot": {

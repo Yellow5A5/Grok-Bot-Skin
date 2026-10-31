@@ -1,21 +1,19 @@
 #!/usr/bin/env node
-import { execFile } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
-import { promisify } from "node:util";
 import { exportPack } from "../src/lib/archive.mjs";
 import {
   applyChrome,
   grokBotStatus,
   revealAvatar,
 } from "../src/lib/apply.mjs";
-import { wearSkin } from "../src/lib/wear.mjs";
 import { compileOverlay } from "../src/lib/compile.mjs";
 import { getPack, listPacks, PackError, publicPack } from "../src/lib/pack.mjs";
+import { parseLocale, readPrefs, writePrefs } from "../src/lib/prefs.mjs";
 import { STUDIO_PORT, studioDir } from "../src/lib/paths.mjs";
+import { resolvePack, wearSkin } from "../src/lib/wear.mjs";
 
-const execFileAsync = promisify(execFile);
 const MIME = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -61,6 +59,20 @@ const server = http.createServer(async (request, response) => {
     }
     if (request.method === "GET" && url.pathname === "/api/status") {
       return json(response, 200, await grokBotStatus());
+    }
+    if (request.method === "GET" && url.pathname === "/api/prefs") {
+      return json(response, 200, readPrefs());
+    }
+    if (request.method === "POST" && url.pathname === "/api/prefs") {
+      const body = await readBody(request);
+      const prefs = writePrefs(
+        body.locale != null ? { locale: parseLocale(body.locale) } : {},
+      );
+      const status = await grokBotStatus();
+      if (body.locale != null && status.debug) {
+        await applyChrome(resolvePack());
+      }
+      return json(response, 200, prefs);
     }
     const packAsset = url.pathname.match(/^\/packs\/([^/]+)\/(avatar|wallpaper)$/);
     if (request.method === "GET" && packAsset) {
@@ -130,22 +142,12 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
-function openStudio(href) {
-  console.log(`Grok Bot 皮肤工作室  ${href}`);
-  if (process.platform === "darwin") {
-    execFileAsync("open", [href]).catch(() => {});
-  }
-}
-
 server.on("error", (error) => {
   if (error.code === "EADDRINUSE") {
-    console.error(`端口 ${STUDIO_PORT} 已被占用。若工作室已开，直接访问 http://127.0.0.1:${STUDIO_PORT}/`);
-    process.exit(1);
+    process.exit(0);
   }
   throw error;
 });
 
-server.listen(STUDIO_PORT, "127.0.0.1", () => {
-  openStudio(`http://127.0.0.1:${STUDIO_PORT}/`);
-});
+server.listen(STUDIO_PORT, "127.0.0.1");
 

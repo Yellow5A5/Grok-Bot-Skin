@@ -15,13 +15,30 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
 .top {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  gap: 16px;
   padding: 22px 28px 12px;
   border-bottom: 1px solid var(--line);
 }
 .brand { display: flex; gap: 12px; align-items: baseline; }
 .brand strong { font-size: 18px; letter-spacing: 0.02em; font-weight: 600; }
 .brand span { color: var(--muted); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+.top-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.lang { display: flex; gap: 0; border: 1px solid var(--line); }
+.lang button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.lang button[aria-pressed="true"] {
+  background: var(--panel);
+  color: var(--text);
+}
 .status { color: var(--muted); font-size: 13px; }
 
 .layout {

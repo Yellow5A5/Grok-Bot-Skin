@@ -55,7 +55,7 @@ export function loadPack(jsonPath) {
     jsonPath,
     avatarAbs,
     wallpaperAbs,
-    displayName: raw.nameZh || raw.name,
+    displayName: raw.name || raw.nameZh,
     issues,
     chrome: raw.chrome
       ? { ...raw.chrome, customCss: customCss || undefined }
@@ -171,6 +171,16 @@ export function getPack(id) {
   return pack;
 }
 
+export function localizedPackName(pack, locale = "en") {
+  if (locale === "zh") return pack.nameZh || pack.name || pack.id;
+  return pack.name || pack.nameZh || pack.id;
+}
+
+export function localizedPackDescription(pack, locale = "en") {
+  if (locale === "zh") return pack.description || pack.descriptionEn || "";
+  return pack.descriptionEn || pack.description || "";
+}
+
 export function publicPack(pack) {
   return {
     id: pack.id,
@@ -181,6 +191,7 @@ export function publicPack(pack) {
     author: pack.author || null,
     license: pack.license || null,
     description: pack.description || "",
+    descriptionEn: pack.descriptionEn || "",
     appearance: pack.appearance,
     source: pack.source || "bundled",
     bot: {

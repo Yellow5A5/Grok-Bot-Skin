@@ -1,22 +1,28 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Grok Bot 皮肤工作室</title>
+    <title>Grok Bot Skin Studio</title>
     <link rel="stylesheet" href="/studio.css" />
   </head>
   <body>
     <header class="top">
       <div class="brand">
-        <strong>Grok Bot 皮肤工作室</strong>
+        <strong id="brand-title">Grok Bot Skin Studio</strong>
         <span>Skin Kit</span>
       </div>
-      <div id="status" class="status">正在检查 Grok Bot…</div>
+      <div class="top-meta">
+        <div id="lang" class="lang" role="group" aria-label="Language">
+          <button type="button" data-locale="en">English</button>
+          <button type="button" data-locale="zh">中文</button>
+        </div>
+        <div id="status" class="status">Checking Grok Bot…</div>
+      </div>
     </header>
 
     <main class="layout">
-      <aside class="rail" id="rail" aria-label="皮肤列表"></aside>
+      <aside class="rail" id="rail" aria-label="Skin packs"></aside>
       <section class="stage">
         <div class="device" id="device">
           <div class="titlebar">
@@ -27,7 +33,7 @@
             <div class="sidebar" id="sidebar"></div>
             <div class="chat">
               <div class="transcript" id="transcript"></div>
-              <div class="composer">给这个 Bot 发消息…</div>
+              <div class="composer" id="composer">Message this bot…</div>
             </div>
           </div>
         </div>
@@ -35,8 +41,8 @@
       </section>
     </main>
 
-    <p class="footnote">
-      界面皮肤通过本地 CSS 覆盖 token，不修改 Grok Bot.app。
+    <p class="footnote" id="footnote">
+      Chrome skins overlay CSS tokens. They do not modify Grok Bot.app.
     </p>
     <script type="module" src="/studio.js"></script>
   </body>

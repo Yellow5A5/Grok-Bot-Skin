@@ -7,6 +7,7 @@
   "author": "grok-bot-skin",
   "license": "CC-BY-4.0",
   "description": "黑墨、牙色纸、antique gold。深色玻璃界面，适合夜间长时间对着 Bot 说话。",
+  "descriptionEn": "Black ink, ivory paper, antique gold. A dark glass window for long night chats.",
   "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
   "appearance": "dark",
   "bot": {

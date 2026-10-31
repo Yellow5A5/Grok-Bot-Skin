@@ -22,6 +22,7 @@
     "author": { "type": "string" },
     "license": { "type": "string", "default": "CC-BY-4.0" },
     "description": { "type": "string", "maxLength": 500 },
+    "descriptionEn": { "type": "string", "maxLength": 500 },
     "homepage": { "type": "string" },
     "compatible": {
       "type": "object",

@@ -1,4 +1,4 @@
-import { execFile } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -10,8 +10,8 @@ import {
   readActive,
   rememberSkin,
 } from "./apply.mjs";
-import { getPack, listPacks } from "./pack.mjs";
-import { kitRoot, menuBarAppPath } from "./paths.mjs";
+import { getPack, listPacks, localizedPackName } from "./pack.mjs";
+import { kitRoot, menuBarAppPath, STUDIO_PORT } from "./paths.mjs";
 import { readPrefs } from "./prefs.mjs";
 
 const execFileAsync = promisify(execFile);
@@ -36,6 +36,7 @@ export function resolvePack(id) {
 
 export function snapshot() {
   const packs = listPacks();
+  const locale = readPrefs().locale;
   let pack = null;
   try {
     pack = preferredPack();
@@ -45,15 +46,56 @@ export function snapshot() {
   return {
     kitRoot,
     activeId: pack?.id ?? null,
-    activeName: pack?.displayName ?? "",
+    activeName: pack ? localizedPackName(pack, locale) : "",
     prefs: readPrefs(),
     packs: packs.map((item) => ({
       id: item.id,
-      name: item.displayName,
+      name: localizedPackName(item, locale),
       appearance: item.appearance,
       selected: item.id === pack?.id,
     })),
   };
+}
+
+export function studioHref() {
+  return `http://127.0.0.1:${STUDIO_PORT}/`;
+}
+
+export async function studioAvailable() {
+  try {
+    const response = await fetch(studioHref(), { signal: AbortSignal.timeout(600) });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function openSkinStudio() {
+  const href = studioHref();
+  if (!(await studioAvailable())) {
+    const child = spawn(
+      process.execPath,
+      [path.join(kitRoot, "bin/cli.mjs"), "serve-studio"],
+      {
+        detached: true,
+        stdio: "ignore",
+        env: { ...process.env, GROK_BOT_SKIN_ROOT: kitRoot },
+      },
+    );
+    child.unref();
+    const deadline = Date.now() + 8000;
+    while (Date.now() < deadline) {
+      if (await studioAvailable()) break;
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    }
+    if (!(await studioAvailable())) {
+      throw new Error("Skin Studio did not start. Check that port 4177 is free.");
+    }
+  }
+  if (process.platform === "darwin") {
+    await execFileAsync("open", [href]);
+  }
+  return href;
 }
 
 export async function snapshotWithStatus() {

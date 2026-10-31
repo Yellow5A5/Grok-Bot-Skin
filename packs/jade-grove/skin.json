@@ -7,6 +7,7 @@
   "author": "grok-bot-skin",
   "license": "CC-BY-4.0",
   "description": "青玉与雾林。深青绿底，薄荷高光，适合长期挂着的助手。",
+  "descriptionEn": "Jade and fog forest. Deep teal chrome with mint highlights for a long-running helper.",
   "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
   "appearance": "dark",
   "bot": {

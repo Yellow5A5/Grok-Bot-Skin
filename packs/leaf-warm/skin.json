@@ -7,6 +7,7 @@
   "author": "grok-bot-skin",
   "license": "CC-BY-4.0",
   "description": "浅色卡通忍者村：鸣人和九尾各占一侧，中间留给聊天。护额、螺旋丸、拉面和青蛙点缀窗角。",
+  "descriptionEn": "Light ninja village: Naruto and Kurama at the sides, the village in the middle for chat.",
   "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
   "appearance": "light",
   "bot": {

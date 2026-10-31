@@ -15,7 +15,7 @@
     "grok-bot-skin": "./bin/cli.mjs"
   },
   "scripts": {
-    "studio": "node bin/studio.mjs",
+    "studio": "node bin/cli.mjs studio",
     "open": "node bin/cli.mjs open",
     "menubar": "node bin/cli.mjs menubar",
     "list": "node bin/cli.mjs list",
