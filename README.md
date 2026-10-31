@@ -18,7 +18,9 @@ Unofficial. Not affiliated with xAI or Cursor.
 |:---:|:---:|
 | ![Leaf Warm](docs/screenshots/leaf-warm.jpg) | ![Avenger Neon](docs/screenshots/avenger-neon.jpg) |
 
-![Jade Grove](docs/screenshots/jade-grove.jpg)
+| Jade Grove |
+|:---:|
+| ![Jade Grove](docs/screenshots/jade-grove.jpg) |
 
 Ink Night, Avenger Neon, and Jade Grove need **Dark**. Straw Sea and Leaf Warm need **Light**. Set that in Grok Bot → Settings → Appearance.
 
@@ -27,16 +29,14 @@ Ink Night, Avenger Neon, and Jade Grove need **Dark**. Straw Sea and Leaf Warm n
 macOS, Node 22+, Grok Bot already installed.
 
 ```bash
-npm run menubar
+curl -fsSL https://raw.githubusercontent.com/Acropolis/grok-bot-skin/main/scripts/install.sh | bash
 ```
 
-Or double-click `scripts/Show Skin Menu.command`.
-
-A palette icon appears in the menu bar. Grok Bot opens with the last skin you used.
+That copies the kit to `~/Library/Application Support/grok-bot-skin/app` and opens the menu bar. From a checkout, `./scripts/install.sh` (or `scripts/Install Grok Bot Skin.command`) does the same thing.
 
 ## Menu bar
 
-![Menu bar](docs/screenshots/menubar.jpg)
+<img src="docs/screenshots/menubar.jpg" alt="Menu bar" width="280">
 
 - A pack name applies that skin
 - **Follow official Dock launches** — opening Grok Bot from the Dock still gets the last skin (the extra restarts the app)
@@ -49,11 +49,7 @@ Prefs and imported packs: `~/Library/Application Support/grok-bot-skin/`.
 
 ## Skin Studio
 
-```bash
-npm run studio
-```
-
-Opens [http://127.0.0.1:4177/](http://127.0.0.1:4177/). Preview a pack, apply it, or export a `.grokskin.zip`.
+**Skin Studio** on the menu, or `npm run studio` from a checkout. Opens [http://127.0.0.1:4177/](http://127.0.0.1:4177/). Preview a pack, apply it, or export a `.grokskin.zip`.
 
 ![Skin Studio](docs/screenshots/studio.jpg)
 

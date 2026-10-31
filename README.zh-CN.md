@@ -18,7 +18,9 @@
 |:---:|:---:|
 | ![木叶暖](docs/screenshots/leaf-warm.jpg) | ![复联霓](docs/screenshots/avenger-neon.jpg) |
 
-![青玉林](docs/screenshots/jade-grove.jpg)
+| 青玉林 |
+|:---:|
+| ![青玉林](docs/screenshots/jade-grove.jpg) |
 
 水墨夜、复联霓、青玉林用 **Dark**。草帽海、木叶暖用 **Light**。在 Grok Bot → Settings → Appearance 里改。
 
@@ -27,16 +29,14 @@
 macOS、Node 22+，本机已装 Grok Bot。
 
 ```bash
-npm run menubar
+curl -fsSL https://raw.githubusercontent.com/Acropolis/grok-bot-skin/main/scripts/install.sh | bash
 ```
 
-也可以双击 `scripts/Show Skin Menu.command`。
-
-菜单栏会出现调色盘图标，并打开 Grok Bot，用你上次选的皮肤。
+脚本会把工具复制到 `~/Library/Application Support/grok-bot-skin/app` 并打开菜单栏。若已经有一份仓库目录，执行 `./scripts/install.sh`（或双击 `scripts/Install Grok Bot Skin.command`）效果相同。
 
 ## 菜单栏
 
-![菜单栏](docs/screenshots/menubar.jpg)
+<img src="docs/screenshots/menubar.jpg" alt="菜单栏" width="280">
 
 - 点皮肤名：换皮肤
 - **官方 Dock 打开也换皮肤** — 从 Dock 打开时仍用上次的皮肤（菜单栏会重启一次 Grok Bot）
@@ -49,11 +49,7 @@ npm run menubar
 
 ## 皮肤工作室
 
-```bash
-npm run studio
-```
-
-打开 [http://127.0.0.1:4177/](http://127.0.0.1:4177/)。预览、应用，或导出 `.grokskin.zip`。
+菜单栏里的 **皮肤工作室**，或在仓库目录里执行 `npm run studio`。打开 [http://127.0.0.1:4177/](http://127.0.0.1:4177/)。预览、应用，或导出 `.grokskin.zip`。
 
 ![皮肤工作室](docs/screenshots/studio.jpg)
 

@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "Shareable Grok Bot skin packs, studio, and apply tools. Does not patch Grok Bot.app.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Acropolis/grok-bot-skin.git"
+  },
+  "homepage": "https://github.com/Acropolis/grok-bot-skin",
   "keywords": [
     "grok-bot",
     "theme",
