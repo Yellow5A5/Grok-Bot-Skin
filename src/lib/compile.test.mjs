@@ -8,11 +8,9 @@ test("bundled packs load and compile", () => {
   const ids = packs.map((pack) => pack.id).sort();
   assert.deepEqual(ids, [
     "avenger-neon",
-    "ember-forge",
     "ink-night",
     "jade-grove",
     "leaf-warm",
-    "paper-dawn",
     "straw-sea",
   ]);
   assert.equal(packs[0].id, "ink-night");
@@ -33,13 +31,6 @@ test("bundled packs load and compile", () => {
     assert.match(css, /sand-sidebar-resize-handle/);
     assert.match(css, /sand-agents-list__rows/);
   }
-});
-
-test("paper-dawn is a light skin", () => {
-  const pack = getPack("paper-dawn");
-  assert.equal(pack.appearance, "light");
-  const css = compileOverlay(pack);
-  assert.match(css, /color-scheme: light/);
 });
 
 test("injecting a skin also boots the usage HUD", () => {

@@ -150,12 +150,10 @@ export function listPacks() {
   }
   const featured = [
     "ink-night",
-    "paper-dawn",
     "straw-sea",
     "leaf-warm",
     "avenger-neon",
     "jade-grove",
-    "ember-forge",
   ];
   return [...byId.values()].sort((a, b) => {
     const ia = featured.indexOf(a.id);

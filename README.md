@@ -43,12 +43,10 @@ npm run studio
 | id | 名字 | Appearance |
 |---|---|---|
 | `ink-night` | 水墨夜 | Dark |
-| `paper-dawn` | 宣纸晨 | Light |
 | `straw-sea` | 草帽海 | Light |
 | `leaf-warm` | 木叶暖 | Light |
 | `avenger-neon` | 复联霓 | Dark |
 | `jade-grove` | 青玉林 | Dark |
-| `ember-forge` | 熔炉 | Dark |
 
 状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随、登录启动和是否显示订阅用量。
 
