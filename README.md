@@ -2,11 +2,11 @@
 
 **English** | [中文](README.zh-CN.md)
 
-Skins for the macOS [Grok Bot](https://grok.com) app. Switch them from the menu bar. Preview and export them in Skin Studio.
+Skins for the macOS [Grok Bot](https://grok.com) app. Switch them from the menu bar. Preview and export them in Skin Studio. The sidebar can show this billing cycle’s used / remaining percent.
 
-This repository does not include Grok Bot and does not change `Grok Bot.app`.
+Everything runs on the user's Mac: the extra talks to a loopback debug port and injects CSS. It does not upload chat, accounts, or credentials. Subscription usage is read locally for the chip and is not sent anywhere else. The signed app is not patched.
 
-Unofficial. Not affiliated with xAI or Cursor.
+Unofficial. A better look for Grok Bot.
 
 ## Screenshots
 
@@ -84,9 +84,7 @@ Only import zips you trust.
 
 ## How it works
 
-The extra starts Grok Bot with a loopback debug port (`127.0.0.1:19222`) and injects CSS. Opening Grok Bot from the Dock while the extra is quit, or with follow turned off, is the stock window.
-
-Leave `/Applications/Grok Bot.app` alone. `npx grok-bot-skin` lists the other commands.
+The extra starts Grok Bot with a loopback debug port (`127.0.0.1:19222`) and injects CSS. Opening Grok Bot from the Dock while the extra is quit, or with follow turned off, is the stock window. `npx grok-bot-skin` lists the other commands.
 
 ## License
 
