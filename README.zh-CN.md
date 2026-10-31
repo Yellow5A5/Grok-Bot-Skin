@@ -42,7 +42,7 @@ curl -fsSL https://raw.githubusercontent.com/Yellow5A5/Grok-Bot-Skin/main/script
 
 ## 菜单栏
 
-![菜单栏](docs/screenshots/menubar.jpg)
+<img src="docs/screenshots/menubar-cn.png" alt="菜单栏" width="280">
 
 - 点皮肤名：换皮肤
 - **官方 Dock 打开也换皮肤** — 从 Dock 打开时仍用上次的皮肤（菜单栏会重启一次 Grok Bot）
