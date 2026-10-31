@@ -10,17 +10,17 @@ Unofficial. Not affiliated with xAI or Cursor.
 
 ## Screenshots
 
-| Ink Night | Straw Sea |
+| Ink Night | Jade Grove |
 |:---:|:---:|
-| ![Ink Night](docs/screenshots/ink-night.jpg) | ![Straw Sea](docs/screenshots/straw-sea.jpg) |
+| ![Ink Night](docs/screenshots/ink-night.jpg) | ![Jade Grove](docs/screenshots/jade-grove.jpg) |
 
 | Leaf Warm | Avenger Neon |
 |:---:|:---:|
 | ![Leaf Warm](docs/screenshots/leaf-warm.jpg) | ![Avenger Neon](docs/screenshots/avenger-neon.jpg) |
 
-| Jade Grove |
+| Straw Sea |
 |:---:|
-| ![Jade Grove](docs/screenshots/jade-grove.jpg) |
+| ![Straw Sea](docs/screenshots/straw-sea.jpg) |
 
 Ink Night, Avenger Neon, and Jade Grove need **Dark**. Straw Sea and Leaf Warm need **Light**. Set that in Grok Bot → Settings → Appearance.
 

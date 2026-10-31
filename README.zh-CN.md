@@ -10,17 +10,17 @@
 
 ## 预览
 
-| 水墨夜 | 草帽海 |
+| 水墨夜 | 青玉林 |
 |:---:|:---:|
-| ![水墨夜](docs/screenshots/ink-night.jpg) | ![草帽海](docs/screenshots/straw-sea.jpg) |
+| ![水墨夜](docs/screenshots/ink-night.jpg) | ![青玉林](docs/screenshots/jade-grove.jpg) |
 
 | 木叶暖 | 复联霓 |
 |:---:|:---:|
 | ![木叶暖](docs/screenshots/leaf-warm.jpg) | ![复联霓](docs/screenshots/avenger-neon.jpg) |
 
-| 青玉林 |
+| 草帽海 |
 |:---:|
-| ![青玉林](docs/screenshots/jade-grove.jpg) |
+| ![草帽海](docs/screenshots/straw-sea.jpg) |
 
 水墨夜、复联霓、青玉林用 **Dark**。草帽海、木叶暖用 **Light**。在 Grok Bot → Settings → Appearance 里改。
 
