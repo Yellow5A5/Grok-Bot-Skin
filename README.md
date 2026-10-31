@@ -24,7 +24,7 @@ Unofficial community project. Not affiliated with xAI, Cursor, or any film or an
 
 Needs Node 22+ on macOS.
 
-First time, open the menu bar extra and let it start at login:
+First time, open the menu bar extra (it also opens Grok Bot and wears the last skin):
 
 ```bash
 npm run menubar
@@ -105,11 +105,11 @@ See [docs/authoring.md](docs/authoring.md) ([中文](docs/authoring.zh-CN.md)). 
 Daily use is these two:
 
 ```bash
-npm run menubar   # once: menu bar, login item, Dock follow
+npm run menubar   # menu bar, then open Grok Bot with the last skin
 npm run studio    # preview and export packs
 ```
 
-`npm run open` is only a fallback if the menu bar extra is not running. Pack and import are in the sections above. `npx grok-bot-skin` lists the rest.
+`npm run open` is only a fallback if the menu bar extra is already running and you just want to wear a skin. Pack and import are in the sections above. `npx grok-bot-skin` lists the rest.
 
 ## License
 

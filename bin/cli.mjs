@@ -23,7 +23,7 @@ const USAGE = `grok-bot-skin — Grok Bot 皮肤工具
 命令:
   studio                 打开皮肤工作室
   open [id]              启动器：记住并套上上一套（或指定）皮肤
-  menubar                打开菜单栏，已安装皮肤来回切
+  menubar                打开菜单栏，并套上上一套皮肤
   snapshot               当前皮肤与 Grok Bot 状态（JSON）
   follow [on|off]        官方 Dock 打开时也套皮肤（需菜单栏在跑）
   login [on|off]         登录时打开菜单栏
@@ -75,6 +75,13 @@ async function main() {
     case "menubar": {
       const app = await openMenuBar();
       console.log(`菜单栏已打开：${app}`);
+      try {
+        const result = await wearSkin();
+        console.log(`已打开并套上 ${result.pack.displayName}`);
+      } catch (error) {
+        console.error(error.message || error);
+        console.error("菜单栏已在跑。装好 Grok Bot 后再点菜单里的皮肤名。");
+      }
       return;
     }
     case "follow": {

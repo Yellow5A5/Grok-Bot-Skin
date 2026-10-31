@@ -24,7 +24,7 @@ flowchart LR
 
 需要 Node 22+，macOS。
 
-第一次，打开菜单栏并让它登录时启动：
+第一次，打开菜单栏（同时会打开 Grok Bot 并套上上一套皮肤）：
 
 ```bash
 npm run menubar
@@ -103,11 +103,11 @@ npx grok-bot-skin studio
 日常只用这两个：
 
 ```bash
-npm run menubar   # 第一次：菜单栏、登录启动、Dock 跟随
+npm run menubar   # 菜单栏，并打开 Grok Bot 套上上一套皮肤
 npm run studio    # 预览、做包
 ```
 
-`npm run open` 只在菜单栏没跑时才用得上。做包、导入写在上面两节。其余给调试用，`npx grok-bot-skin` 会列出。
+`npm run open` 只在菜单栏已经在跑、只想再套一次皮肤时用。做包、导入写在上面两节。其余给调试用，`npx grok-bot-skin` 会列出。
 
 ## 许可
 
