@@ -3,10 +3,15 @@ macos/*.app
 .inspect/
 node_modules/
 dist/
-.DS_Store
+**/.DS_Store
 *.grokskin.zip
 packs/*/overlay.css
 /index.html
 /preload*.cjs
 /chunk-*.js
 /index-*.css
+.env
+.env.*
+credentials.json
+*.pem
+*.p12

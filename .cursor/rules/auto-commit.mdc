@@ -9,10 +9,7 @@ After a coherent change in this repo, create a **local** git commit. Do not push
 
 ## Identity (repo-local only)
 
-This repository already sets `user.name` and `user.email` in `.git/config`. Do **not** change global git config.
-
-- name: `Acropolis`
-- email: `scnu.hww@foxmail.com`
+This repository already sets `user.name` and `user.email` in `.git/config`. Do **not** change global git config, and do **not** write a personal address into this file.
 
 If those values are missing, set them with `git config user.name` / `user.email` inside this repo only.
 
