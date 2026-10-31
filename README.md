@@ -1,108 +1,117 @@
-# Grok Bot 皮肤工具
+# Grok Bot Skin
 
-给 Grok Bot 换皮肤，并且让别人也能换。皮肤是独立的数据包，**不修改** `Grok Bot.app`。
+**English** | [中文](README.zh-CN.md)
 
-这套工具只做 **界面**：覆盖 token，并把壁纸画在窗口层 `.sand-shell` 上。Bot 头像是 Grok Bot 自己的功能，这里不管。
+Skin packs and a companion launcher for [Grok Bot](https://grok.com). Packs are data folders. This kit **does not modify** `Grok Bot.app`.
 
-日常：菜单栏记住上一套皮肤，列表里来回切。菜单栏在跑时，点官方 Dock 图标也会套上（先退出没带端口的进程，再带端口打开）。官方包本身不动。
+It only restyles the window: CSS tokens plus a wallpaper on `.sand-shell`. Bot avatars stay a Grok Bot feature.
+
+A menu bar extra remembers the last pack and switches among the bundled skins. While that extra is running, the official Dock icon can reopen Grok Bot with the skin (it quits the unsigned-port process, then launches with a loopback debug port). The signed app is never patched.
 
 ```mermaid
 flowchart LR
-  pack["skin.json + 壁纸"] --> studio["皮肤工作室"]
-  menubar["菜单栏常驻"] --> grok["带调试端口的 Grok Bot"]
-  dock["官方 Dock 图标"] --> menubar
-  grok --> css["CDP 注入 CSS"]
+  pack["skin.json + wallpaper"] --> studio["Skin Studio"]
+  menubar["menu bar extra"] --> grok["Grok Bot with debug port"]
+  dock["official Dock icon"] --> menubar
+  grok --> css["CDP CSS overlay"]
   pack --> zip[".grokskin.zip"]
-  zip --> import["别人 import"]
+  zip --> import["someone else imports"]
 ```
 
-## 快速开始
+Unofficial community project. Not affiliated with xAI, Cursor, or any film or anime rights holder. Bundled illustrations are original fan-style art, not official assets. Do not redistribute `Grok Bot.app`.
 
-需要 Node 22+。
+## Quick start
 
-第一次，打开菜单栏并让它登录时启动：
+Needs Node 22+ on macOS.
+
+First time, open the menu bar extra and let it start at login:
 
 ```bash
 npm run menubar
-# 或双击 scripts/Show Skin Menu.command
+# or double-click scripts/Show Skin Menu.command
 ```
 
-菜单栏勾选 **登录时打开菜单栏**、**官方 Dock 打开也套皮肤**（默认都开）。之后：
+In the menu, leave **Open menu bar at login** and **Follow official Dock launches** checked (both default on). Then:
 
-- 点 Dock 里官方 Grok Bot：会套上上一套皮肤
-- 点菜单栏皮肤名：原地换肤
-- 菜单栏没在跑时，用启动器：`npm run open` 或双击 `scripts/Open Grok Bot.command`
+- Official Dock icon: last skin is applied
+- Menu bar skin name: switch in place
+- If the menu bar extra is not running: `npm run open` or `scripts/Open Grok Bot.command`
 
-预览、做包、改 token：
+Preview packs and export zips:
 
 ```bash
 npm run studio
-# 或双击 scripts/Open Skin Studio.command
+# or double-click scripts/Open Skin Studio.command
 ```
 
-| id | 名字 | Appearance |
+| id | Name | Appearance |
 |---|---|---|
-| `ink-night` | 水墨夜 | Dark |
-| `straw-sea` | 草帽海 | Light |
-| `leaf-warm` | 木叶暖 | Light |
-| `avenger-neon` | 复联霓 | Dark |
-| `jade-grove` | 青玉林 | Dark |
+| `ink-night` | Ink Night | Dark |
+| `straw-sea` | Straw Sea | Light |
+| `leaf-warm` | Leaf Warm | Light |
+| `avenger-neon` | Avenger Neon | Dark |
+| `jade-grove` | Jade Grove | Dark |
 
-状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随、登录启动和是否显示订阅用量。
+State lives in `~/Library/Application Support/grok-bot-skin/`: `active.json` is the last skin, `prefs.json` is Dock-follow, login, and whether the usage chip is shown.
 
-把 Grok Bot 的 Settings → Appearance 调成皮肤要求的 Dark / Light。
+Set Grok Bot Settings → Appearance to the Dark or Light value the pack asks for.
 
-## 界面怎么套上
+## How the chrome is applied
 
-Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端口（`127.0.0.1:19222`），再注入 CSS。只改颜色变量，不改 asar、不破签名。套上皮肤后，侧栏头像**上方**默认显示本周期用量：能读到 token 就显示消耗，读不到就显示订阅已用/剩余百分比。卡片不拦截点击。菜单栏可取消勾选 **显示订阅用量**，或 `npx grok-bot-skin usage off`。
+Grok Bot has no official theme API. The launcher adds a loopback debug port (`127.0.0.1:19222`) and injects CSS. It only changes color tokens. It does not rewrite the asar or break the signature.
 
-| 你怎么打开 | 会怎样 |
+After a skin is on, a chip above the sidebar avatar shows cycle usage when the APIs allow it (token totals if present, otherwise plan percent used / remaining). The chip does not intercept clicks. Hide it from the menu (**Show usage chip**) or with `npx grok-bot-skin usage off`.
+
+| How you open Grok Bot | What happens |
 |---|---|
-| 菜单栏「打开并套上」或 `npm run open` | 用上一套皮肤打开；已在跑且端口开着则原地换肤 |
-| 菜单栏皮肤名 | 同上，并记住这一套 |
-| 官方 Dock 图标，且菜单栏在跑、跟随已开 | 若这次没带端口，会先退出再带端口打开并套上 |
-| 官方 Dock 图标，菜单栏没开或跟随已关 | 原样官方进程，界面没皮肤 |
+| Menu **Open Grok Bot and wear** or `npm run open` | Opens with the last skin; reapplies in place if the debug port is already up |
+| Menu bar skin name | Same, and remembers that pack |
+| Official Dock icon, menu bar running, follow on | If this launch has no debug port, quit and reopen with the port, then wear |
+| Official Dock icon, menu bar off or follow off | Stock official process, no skin |
 
-关掉跟随：菜单栏取消勾选，或 `npx grok-bot-skin follow off`。
+Turn follow off from the menu, or `npx grok-bot-skin follow off`.
 
-不要改 `/Applications/Grok Bot.app`：Developer ID 签名、公证、`ElectronAsarIntegrity`，一改就破校验，官方更新也会冲掉。
+Do not edit `/Applications/Grok Bot.app`. Developer ID, notarization, and `ElectronAsarIntegrity` will fail, and the next official update will overwrite the patch.
 
-## 分享给别人
+## Share a pack
 
 ```bash
 npx grok-bot-skin pack ink-night
-# 得到 dist/ink-night-1.0.0.grokskin.zip
+# writes dist/ink-night-1.0.0.grokskin.zip
 ```
 
-对方：
+Someone else:
 
 ```bash
 npx grok-bot-skin import ~/Downloads/ink-night-1.0.0.grokskin.zip
 npx grok-bot-skin studio
 ```
 
-导入的包放在 `~/Library/Application Support/grok-bot-skin/packs/`，不污染仓库。同 id 时用户包覆盖自带包。
+Imported packs go to `~/Library/Application Support/grok-bot-skin/packs/`, not into this repository. A user pack with the same id overrides a bundled one.
 
-## 自己做一套皮肤
+## Author a pack
 
-见 [docs/authoring.md](docs/authoring.md)。最短路径：
+See [docs/authoring.md](docs/authoring.md) ([中文](docs/authoring.zh-CN.md)). Short path:
 
-1. 复制 `examples/template/` 或任意 `packs/*`
-2. 文件夹名与 `skin.json` 的 `id` 一致
-3. 换成自己的壁纸和封面图
-4. 改 `chrome.tokens`
+1. Copy `examples/template/` or any `packs/*`
+2. Folder name must match `skin.json` `id`
+3. Replace the wallpaper and cover image
+4. Edit `chrome.tokens`
 5. `npx grok-bot-skin validate packs/my-skin`
 6. `npx grok-bot-skin pack my-skin`
 
-## 命令
+## Commands
 
-日常只用这三个：
+Daily use is these three:
 
 ```bash
-npm run menubar   # 菜单栏：换肤、登录启动、Dock 跟随
-npm run open      # 菜单栏没开时，打开 Grok Bot 并套上上一套
-npm run studio    # 预览、做包
+npm run menubar   # menu bar: switch skins, login item, Dock follow
+npm run open      # wear the last skin when the menu bar is not running
+npm run studio    # preview and export
 ```
 
-做包、导入写在上面两节。其余给调试用，`npx grok-bot-skin` 会列出。
+Pack and import are in the sections above. `npx grok-bot-skin` lists the rest.
 
+## License
+
+Code is [MIT](LICENSE). Bundled and template pack metadata default to [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).

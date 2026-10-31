@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "description": "Shareable Grok Bot skin packs, studio, and apply tools. Does not patch Grok Bot.app.",
+  "keywords": [
+    "grok-bot",
+    "theme",
+    "skin",
+    "macos",
+    "electron"
+  ],
   "type": "module",
   "bin": {
     "grok-bot-skin": "./bin/cli.mjs"
