@@ -18,7 +18,7 @@ npm test
 - Do not patch `/Applications/Grok Bot.app`.
 - Use [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): summary`.
 - Keep the English `README.md` current. Update `README.zh-CN.md` in the same change when the user-facing flow changes.
-- Bundled art must be original or clearly licensed. No official logos, rips, or copyrighted frames. Fan-style original illustrations are fine if the pack text says so.
+- Bundled art must be original or clearly licensed. No official logos, rips, or frames from other works. Do not mark franchise-inspired packs as CC BY.
 
 ## Pull requests
 

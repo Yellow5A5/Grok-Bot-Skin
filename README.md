@@ -2,68 +2,13 @@
 
 **English** | [中文](README.zh-CN.md)
 
-Skin packs for [Grok Bot](https://grok.com), with a menu bar extra and Skin Studio. Packs are folders. This kit **does not modify** `Grok Bot.app`.
+Skins for the macOS [Grok Bot](https://grok.com) app. Switch them from the menu bar. Preview and export them in Skin Studio.
 
-```mermaid
-flowchart LR
-  pack["skin.json + wallpaper"] --> studio["Skin Studio"]
-  menubar["menu bar extra"] --> grok["Grok Bot with debug port"]
-  dock["official Dock icon"] --> menubar
-  grok --> css["CDP CSS overlay"]
-  pack --> zip[".grokskin.zip"]
-  zip --> import["someone else imports"]
-```
+This repository does not include Grok Bot and does not change `Grok Bot.app`.
 
-Unofficial community project. Not affiliated with xAI, Cursor, or any film or anime rights holder. Bundled illustrations are original fan-style art, not official assets. Do not redistribute `Grok Bot.app`.
+Unofficial. Not affiliated with xAI or Cursor.
 
-## Quick start
-
-Needs Node 22+ on macOS.
-
-```bash
-npm run menubar
-# or double-click scripts/Show Skin Menu.command
-```
-
-```bash
-npm run studio
-# or double-click scripts/Open Skin Studio.command
-```
-
-| id | Name | Appearance |
-|---|---|---|
-| `ink-night` | Ink Night | Dark |
-| `straw-sea` | Straw Sea | Light |
-| `leaf-warm` | Leaf Warm | Light |
-| `avenger-neon` | Avenger Neon | Dark |
-| `jade-grove` | Jade Grove | Dark |
-
-Match Grok Bot Settings → Appearance to the pack. State is in `~/Library/Application Support/grok-bot-skin/`.
-
-## Menu bar
-
-`npm run menubar` puts a palette extra in the macOS menu bar, opens Grok Bot, and wears the last skin.
-
-![Menu bar](docs/screenshots/menubar.jpg)
-
-- Pack name: switch in place
-- **Follow official Dock launches**: the official Dock icon also comes back with the last skin (the extra quits the stock process and relaunches with a debug port)
-- **Show usage chip**: this cycle’s used / remaining percent, or token totals when Grok Bot exposes them
-- **Open menu bar at login**
-- **Language → English / 中文**: menu bar, usage chip, Studio, and pack names
-- **Skin Studio**: opens the local preview
-
-## Skin Studio
-
-`npm run studio` opens a local page at `http://127.0.0.1:4177/`. Preview tokens and wallpaper, apply chrome, or export a zip.
-
-![Skin Studio](docs/screenshots/studio.jpg)
-
-English / 中文 in the header follows the same language pref as the menu bar.
-
-## Preview
-
-Real Grok Bot window. Sidebar and chat copy are mock English.
+## Screenshots
 
 | Ink Night | Straw Sea |
 |:---:|:---:|
@@ -75,26 +20,50 @@ Real Grok Bot window. Sidebar and chat copy are mock English.
 
 ![Jade Grove](docs/screenshots/jade-grove.jpg)
 
-## How it applies
+Ink Night, Avenger Neon, and Jade Grove need **Dark**. Straw Sea and Leaf Warm need **Light**. Set that in Grok Bot → Settings → Appearance.
 
-The launcher adds a loopback debug port (`127.0.0.1:19222`) and injects CSS. Color tokens only — no asar rewrite, no signature break.
+## Install
 
-| How you open Grok Bot | What happens |
-|---|---|
-| Menu **Open Grok Bot and wear** | Opens with the last skin; reapplies in place if the debug port is already up |
-| Menu bar skin name | Same, and remembers that pack |
-| Official Dock icon, menu bar running, follow on | If this launch has no debug port, quit and reopen with the port, then wear |
-| Official Dock icon, menu bar off or follow off | Stock official process, no skin |
+macOS, Node 22+, Grok Bot already installed.
 
-Do not edit `/Applications/Grok Bot.app`. Developer ID, notarization, and `ElectronAsarIntegrity` will fail, and the next official update will overwrite the patch.
+```bash
+npm run menubar
+```
 
-## Author a pack
+Or double-click `scripts/Show Skin Menu.command`.
 
-See [docs/authoring.md](docs/authoring.md) ([中文](docs/authoring.zh-CN.md)). Short path:
+A palette icon appears in the menu bar. Grok Bot opens with the last skin you used.
+
+## Menu bar
+
+![Menu bar](docs/screenshots/menubar.jpg)
+
+- A pack name applies that skin
+- **Follow official Dock launches** — opening Grok Bot from the Dock still gets the last skin (the extra restarts the app)
+- **Show usage chip** — used / remaining percent for this billing cycle
+- **Open menu bar at login**
+- **Language → English / 中文**
+- **Skin Studio**
+
+Prefs and imported packs: `~/Library/Application Support/grok-bot-skin/`.
+
+## Skin Studio
+
+```bash
+npm run studio
+```
+
+Opens [http://127.0.0.1:4177/](http://127.0.0.1:4177/). Preview a pack, apply it, or export a `.grokskin.zip`.
+
+![Skin Studio](docs/screenshots/studio.jpg)
+
+## Make a pack
+
+[docs/authoring.md](docs/authoring.md) · [中文](docs/authoring.zh-CN.md)
 
 1. Copy `examples/template/` or any `packs/*`
 2. Folder name must match `skin.json` `id`
-3. Replace the wallpaper and cover image
+3. Replace the wallpaper and cover
 4. Edit `chrome.tokens`
 5. `npx grok-bot-skin validate packs/my-skin`
 6. `npx grok-bot-skin pack my-skin`
@@ -103,29 +72,34 @@ See [docs/authoring.md](docs/authoring.md) ([中文](docs/authoring.zh-CN.md)). 
 
 ```bash
 npx grok-bot-skin pack ink-night
-# writes dist/ink-night-1.0.0.grokskin.zip
+# dist/ink-night-1.0.0.grokskin.zip
 ```
 
-Someone else:
+On the other Mac:
 
 ```bash
 npx grok-bot-skin import ~/Downloads/ink-night-1.0.0.grokskin.zip
 npx grok-bot-skin studio
 ```
 
-Imported packs go to `~/Library/Application Support/grok-bot-skin/packs/`. A user pack with the same id overrides a bundled one.
+Imports go to `~/Library/Application Support/grok-bot-skin/packs/`. Same `id` as a bundled pack: the import wins.
 
-## Commands
+Only import zips you trust.
 
-Daily use is these two:
+## How it works
 
-```bash
-npm run menubar   # menu bar, then open Grok Bot with the last skin
-npm run studio    # preview and export packs
-```
+The extra starts Grok Bot with a loopback debug port (`127.0.0.1:19222`) and injects CSS. Opening Grok Bot from the Dock while the extra is quit, or with follow turned off, is the stock window.
 
-`npm run open` is only a fallback if the menu bar extra is already running and you just want to wear a skin. `npx grok-bot-skin` lists the rest.
+Leave `/Applications/Grok Bot.app` alone. `npx grok-bot-skin` lists the other commands.
 
 ## License
 
-Code is [MIT](LICENSE). Bundled and template pack metadata default to [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+Code: [MIT](LICENSE).
+
+`ink-night`, `jade-grove`, and `examples/template` (including their illustrations): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+`straw-sea`, `leaf-warm`, and `avenger-neon` are unofficial fan-style packs. Names and likenesses belong to their owners. Those three are not under CC BY.
+
+Do not put `Grok Bot.app` in this repo or in a zip you share.
+
+[CONTRIBUTING.md](CONTRIBUTING.md) · [SECURITY.md](SECURITY.md)

@@ -118,7 +118,7 @@ export async function revealAvatar(pack) {
   }
   return {
     avatar: pack.avatarAbs,
-    steps: ["这是皮肤包封面图，不是 Grok Bot 头像设置。"],
+    steps: ["Revealed in Finder."],
   };
 }
 

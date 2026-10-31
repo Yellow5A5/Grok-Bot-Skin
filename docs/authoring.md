@@ -23,19 +23,15 @@ Fields follow [schema/skin.schema.json](../schema/skin.schema.json). Core ones:
 | `appearance` | `dark` or `light`; match Grok Bot Settings → Appearance |
 | `bot.avatar` | Studio cover path |
 | `bot.accent` | Preview / accent |
-| `chrome.tokens.text` | Foreground (`--cursor-base`) |
-| `chrome.tokens.chrome` | Window chrome |
+| `chrome.tokens.text` | Foreground |
+| `chrome.tokens.chrome` | Window |
 | `chrome.tokens.sidebar` | Sidebar |
 | `chrome.tokens.pane` | Chat surface |
 | `chrome.tokens.accent` | Accent |
-| `chrome.tokens.extra` | Raw `--sand-...` variables |
-| `chrome.customCss` | Extra CSS; keep selectors conservative |
+| `chrome.tokens.extra` | Extra `--sand-…` variables |
+| `chrome.customCss` | Extra CSS |
 
-## Chrome tokens
-
-Many Grok Bot surfaces are `color-mix(var(--cursor-base), transparent)`. Changing `text` / `chrome` / `accent` is usually enough. Hashed class colors are not overridden.
-
-Wallpaper is painted on `.sand-shell` (the opaque window layer). The chat stage stays transparent so the paper shows through. Higher `wallpaperOpacity` makes the illustration stronger. Grok Bot CSP allows `img-src file:`.
+Changing `text` / `chrome` / `accent` is usually enough. Wallpaper is painted on `.sand-shell`. Raise `wallpaperOpacity` to show more of the illustration.
 
 ## Validate and pack
 
@@ -46,3 +42,5 @@ npx grok-bot-skin pack my-skin
 ```
 
 The zip root is `skin.json`. After `import`, the pack lands in the user packs directory.
+
+Do not mark franchise-inspired packs as CC BY. See the License section in [README.md](../README.md).

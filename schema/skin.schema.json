@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://grok-bot-skin.local/schema/skin.schema.json",
   "title": "Grok Bot Skin Pack",
-  "description": "A shareable skin pack for Grok Bot. Avatar is applied through Grok Bot's official Upload tab. Chrome tokens are compiled to a CSS overlay.",
+  "description": "A shareable skin pack for Grok Bot. Chrome tokens compile to a CSS overlay. bot.avatar is the Studio cover image.",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "name", "version", "appearance", "bot"],
