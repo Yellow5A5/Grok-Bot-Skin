@@ -35,7 +35,7 @@ In the menu, leave **Open menu bar at login** and **Follow official Dock launche
 
 - Official Dock icon: last skin is applied
 - Menu bar skin name: switch in place
-- If the menu bar extra is not running: `npm run open` or `scripts/Open Grok Bot.command`
+- **Show usage chip** (on by default): plan percent remaining, or token totals when Grok Bot exposes them. Uncheck to hide.
 
 Preview packs and export zips:
 
@@ -60,11 +60,11 @@ Set Grok Bot Settings → Appearance to the Dark or Light value the pack asks fo
 
 Grok Bot has no official theme API. The launcher adds a loopback debug port (`127.0.0.1:19222`) and injects CSS. It only changes color tokens. It does not rewrite the asar or break the signature.
 
-After a skin is on, a chip above the sidebar avatar shows cycle usage when the APIs allow it (token totals if present, otherwise plan percent used / remaining). The chip does not intercept clicks. Hide it from the menu (**Show usage chip**) or with `npx grok-bot-skin usage off`.
+After a skin is on, a chip above the sidebar avatar shows this cycle’s usage: token totals if the signed-in APIs return them, otherwise **percent used / remaining** on the Grok Bot plan. It does not intercept clicks. Hide it from the menu (**Show usage chip**) or `npx grok-bot-skin usage off`.
 
 | How you open Grok Bot | What happens |
 |---|---|
-| Menu **Open Grok Bot and wear** or `npm run open` | Opens with the last skin; reapplies in place if the debug port is already up |
+| Menu **Open Grok Bot and wear** | Opens with the last skin; reapplies in place if the debug port is already up |
 | Menu bar skin name | Same, and remembers that pack |
 | Official Dock icon, menu bar running, follow on | If this launch has no debug port, quit and reopen with the port, then wear |
 | Official Dock icon, menu bar off or follow off | Stock official process, no skin |
@@ -102,15 +102,14 @@ See [docs/authoring.md](docs/authoring.md) ([中文](docs/authoring.zh-CN.md)). 
 
 ## Commands
 
-Daily use is these three:
+Daily use is these two:
 
 ```bash
-npm run menubar   # menu bar: switch skins, login item, Dock follow
-npm run open      # wear the last skin when the menu bar is not running
-npm run studio    # preview and export
+npm run menubar   # once: menu bar, login item, Dock follow
+npm run studio    # preview and export packs
 ```
 
-Pack and import are in the sections above. `npx grok-bot-skin` lists the rest.
+`npm run open` is only a fallback if the menu bar extra is not running. Pack and import are in the sections above. `npx grok-bot-skin` lists the rest.
 
 ## License
 
