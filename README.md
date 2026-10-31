@@ -46,17 +46,17 @@ npm run studio
 | `paper-dawn` | 宣纸晨 | Light |
 | `straw-sea` | 草帽海 | Light |
 | `leaf-warm` | 木叶暖 | Light |
-| `starlight` | 星光 | Dark |
+| `avenger-neon` | 复联霓 | Dark |
 | `jade-grove` | 青玉林 | Dark |
 | `ember-forge` | 熔炉 | Dark |
 
-状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随和登录启动。
+状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随、登录启动和是否显示订阅用量。
 
 把 Grok Bot 的 Settings → Appearance 调成皮肤要求的 Dark / Light。
 
 ## 界面怎么套上
 
-Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端口（`127.0.0.1:19222`），再注入 CSS。只改颜色变量，不改 asar、不破签名。套上皮肤后，侧栏头像**上方**会显示本周期用量：能读到 token 就显示消耗，读不到就显示订阅已用/剩余百分比。卡片不拦截点击。
+Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端口（`127.0.0.1:19222`），再注入 CSS。只改颜色变量，不改 asar、不破签名。套上皮肤后，侧栏头像**上方**默认显示本周期用量：能读到 token 就显示消耗，读不到就显示订阅已用/剩余百分比。卡片不拦截点击。菜单栏可取消勾选 **显示订阅用量**，或 `npx grok-bot-skin usage off`。
 
 | 你怎么打开 | 会怎样 |
 |---|---|

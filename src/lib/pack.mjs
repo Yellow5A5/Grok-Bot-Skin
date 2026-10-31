@@ -153,7 +153,7 @@ export function listPacks() {
     "paper-dawn",
     "straw-sea",
     "leaf-warm",
-    "starlight",
+    "avenger-neon",
     "jade-grove",
     "ember-forge",
   ];

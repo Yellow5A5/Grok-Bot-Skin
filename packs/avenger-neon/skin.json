@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schema/skin.schema.json",
+  "id": "avenger-neon",
+  "name": "Avenger Neon",
+  "nameZh": "复联霓",
+  "version": "1.0.0",
+  "author": "grok-bot-skin",
+  "license": "CC-BY-4.0",
+  "description": "赛博朋克夜城：同心能量环与红金盔影，品红与电青描边。深色 Appearance 下用。粉丝向原创插画，不是官方素材。",
+  "compatible": { "app": "Grok Bot", "minVersion": "0.78.0" },
+  "appearance": "dark",
+  "bot": {
+    "avatar": "assets/avatar.jpg",
+    "accent": "#ff4d6d",
+    "suggestedLabel": "Neon",
+    "generatePrompt": "Centered cyberpunk helmet with a glowing visor slit and faint concentric energy rings behind the head, filling most of the square for a circular crop. Crimson and gold plates, magenta and cyan rim light, midnight purple-black background edge to edge. Original fan-style, no official logos, no text, no frame."
+  },
+  "chrome": {
+    "wallpaper": "assets/wallpaper.jpg",
+    "wallpaperOpacity": 0.48,
+    "tokens": {
+      "text": "#e8f1ff",
+      "muted": "#8aa0c4",
+      "chrome": "#07060c",
+      "sidebar": "#0c0a14",
+      "pane": "#161225",
+      "accent": "#ff4d6d",
+      "border": "#3d2a58"
+    }
+  }
+}

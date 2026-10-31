@@ -7,12 +7,12 @@ test("bundled packs load and compile", () => {
   const packs = listPacks();
   const ids = packs.map((pack) => pack.id).sort();
   assert.deepEqual(ids, [
+    "avenger-neon",
     "ember-forge",
     "ink-night",
     "jade-grove",
     "leaf-warm",
     "paper-dawn",
-    "starlight",
     "straw-sea",
   ]);
   assert.equal(packs[0].id, "ink-night");
@@ -28,6 +28,7 @@ test("bundled packs load and compile", () => {
     }
     assert.match(css, /#grok-bot-skin-usage/);
     assert.match(css, /\.sand-message[^{]+\{[^}]*color: var\(--grok-skin-text\)/);
+    assert.match(css, /sand-file-card/);
     assert.match(css, /pointer-events: none/);
     assert.match(css, /sand-sidebar-resize-handle/);
     assert.match(css, /sand-agents-list__rows/);
@@ -50,6 +51,11 @@ test("injecting a skin also boots the usage HUD", () => {
   assert.match(js, /getCursorUsageBreakdown/);
   assert.match(js, /desktop\.main/);
   assert.match(js, /grok-bot-skin-usage/);
+  assert.match(js, /grokBotSkinUsage = "on"/);
+  const hidden = injectExpression("/*css*/", "straw-sea", { showUsageHud: false });
+  assert.match(hidden, /grokBotSkinUsage = "off"/);
+  assert.match(hidden, /grok-bot-skin-usage/);
+  assert.doesNotMatch(hidden, /getCursorUsageSummary/);
 });
 
 test("cartoon packs are light and paint window ornaments", () => {

@@ -144,6 +144,34 @@ export function compileOverlay(pack, options = {}) {
     `${host} .sand-agent-item${BEAT} {
   color: var(--grok-skin-text) !important;
 }`,
+    `${host} .sand-file-card${BEAT},
+${host} .sand-file-card-wrap${BEAT},
+${host} .sand-message-card${BEAT},
+${host} .sand-file-card section${BEAT},
+${host} .sand-file-card-wrap section${BEAT} {
+  color: var(--grok-skin-text) !important;
+  background: color-mix(in srgb, var(--grok-skin-pane) 94%, var(--grok-skin-chrome)) !important;
+  background-image: none !important;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--grok-skin-accent) 36%, transparent),
+    0 1px 0 color-mix(in srgb, var(--grok-skin-text) 10%, transparent) !important;
+}`,
+    `${host} .sand-file-card${BEAT} .sand-kit-text,
+${host} .sand-file-card${BEAT} p,
+${host} .sand-file-card${BEAT} span:not(.sand-file-card__meta) {
+  color: var(--grok-skin-text) !important;
+}`,
+    `${host} .sand-file-card__meta${BEAT} {
+  color: color-mix(in srgb, var(--grok-skin-text) 72%, transparent) !important;
+}`,
+    `${host} .sand-inserted-chip${BEAT} {
+  color: var(--grok-skin-text) !important;
+  background: color-mix(in srgb, var(--grok-skin-pane) 82%, var(--grok-skin-accent)) !important;
+}`,
+    `${host} .sand-chat pre${BEAT} {
+  background: color-mix(in srgb, var(--grok-skin-chrome) 78%, var(--grok-skin-pane)) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--grok-skin-accent) 22%, transparent) !important;
+}`,
   ];
 
   const customCss = applyAssetTokens(pack.chrome?.customCss, pack);
@@ -156,10 +184,12 @@ export function compileOverlay(pack, options = {}) {
   return `${blocks.join("\n\n")}\n`;
 }
 
-export function injectExpression(css, skinId) {
+export function injectExpression(css, skinId, options = {}) {
+  const showUsageHud = options.showUsageHud !== false;
   return `(() => {
     const id = "grok-bot-skin-overlay";
     document.documentElement.dataset.grokBotSkin = ${JSON.stringify(skinId)};
+    document.documentElement.dataset.grokBotSkinUsage = ${JSON.stringify(showUsageHud ? "on" : "off")};
     let el = document.getElementById(id);
     if (!el) {
       el = document.createElement("style");
@@ -196,8 +226,8 @@ export function injectExpression(css, skinId) {
         "important",
       );
     }
-    ${usageHudBootSource()}
-    return { ok: true, skin: ${JSON.stringify(skinId)}, bytes: el.textContent.length };
+    ${showUsageHud ? usageHudBootSource() : usageHudTeardownSource()}
+    return { ok: true, skin: ${JSON.stringify(skinId)}, bytes: el.textContent.length, usage: ${JSON.stringify(showUsageHud ? "on" : "off")} };
   })()`;
 }
 
@@ -207,6 +237,7 @@ export function clearExpression() {
     const el = document.getElementById("grok-bot-skin-overlay");
     if (el) el.remove();
     delete document.documentElement.dataset.grokBotSkin;
+    delete document.documentElement.dataset.grokBotSkinUsage;
     return { ok: true, cleared: true };
   })()`;
 }

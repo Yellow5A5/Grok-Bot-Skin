@@ -12,10 +12,12 @@ struct Snapshot: Codable {
 
   var followOfficialLaunch: Bool { prefs?.followOfficialLaunch ?? true }
   var openAtLogin: Bool { prefs?.openAtLogin ?? true }
+  var showUsageHud: Bool { prefs?.showUsageHud ?? true }
 
   struct Prefs: Codable {
     var followOfficialLaunch: Bool?
     var openAtLogin: Bool?
+    var showUsageHud: Bool?
   }
 
   struct Pack: Codable {
@@ -118,6 +120,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
   }
 
+  @objc private func toggleUsage(_ sender: Any?) {
+    let current = loadSnapshot()?.showUsageHud ?? true
+    runInBackground { try self.runNode(["usage", current ? "off" : "on"]) }
+  }
+
   private func onTick() {
     DispatchQueue.global(qos: .utility).async { [weak self] in
       guard let self else { return }
@@ -213,6 +220,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     follow.target = self
     follow.state = (snap?.followOfficialLaunch ?? true) ? .on : .off
     menu.addItem(follow)
+    let usage = NSMenuItem(
+      title: "显示订阅用量",
+      action: #selector(toggleUsage(_:)),
+      keyEquivalent: ""
+    )
+    usage.target = self
+    usage.state = (snap?.showUsageHud ?? true) ? .on : .off
+    menu.addItem(usage)
     let login = NSMenuItem(
       title: "登录时打开菜单栏",
       action: #selector(toggleLogin(_:)),

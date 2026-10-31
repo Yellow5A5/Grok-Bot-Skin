@@ -5,6 +5,7 @@ import { ensureUserRoot, userRoot } from "./paths.mjs";
 export const DEFAULT_PREFS = {
   followOfficialLaunch: true,
   openAtLogin: true,
+  showUsageHud: true,
 };
 
 export function prefsPath() {
@@ -19,6 +20,7 @@ export function readPrefs() {
       ...parsed,
       followOfficialLaunch: parsed.followOfficialLaunch !== false,
       openAtLogin: parsed.openAtLogin !== false,
+      showUsageHud: parsed.showUsageHud !== false,
     };
   } catch {
     return { ...DEFAULT_PREFS };

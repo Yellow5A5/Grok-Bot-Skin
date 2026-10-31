@@ -12,6 +12,7 @@ test("snapshot lists bundled skins with a preferred id", () => {
   assert.ok(snap.kitRoot);
   assert.equal(typeof snap.prefs.followOfficialLaunch, "boolean");
   assert.equal(typeof snap.prefs.openAtLogin, "boolean");
+  assert.equal(typeof snap.prefs.showUsageHud, "boolean");
 });
 
 test("parseOnOff accepts on/off tokens", () => {
@@ -23,7 +24,8 @@ test("parseOnOff accepts on/off tokens", () => {
 test("resolvePack falls back to the remembered or featured skin", () => {
   const pack = resolvePack();
   assert.equal(pack.id, preferredPack().id);
-  const named = resolvePack("starlight");
-  assert.equal(named.id, "starlight");
-  assert.equal(named.displayName.includes("星光") || named.id === "starlight", true);
+  const named = resolvePack("avenger-neon");
+  assert.equal(named.id, "avenger-neon");
+  assert.equal(named.appearance, "dark");
+  assert.match(named.displayName, /复联霓|Avenger/);
 });

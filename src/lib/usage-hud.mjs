@@ -1,7 +1,7 @@
 export const USAGE_HUD_CSS = `html[data-grok-bot-skin] .sand-agents-sidebar {
   position: relative !important;
 }
-html[data-grok-bot-skin] .sand-agents-list__rows {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] .sand-agents-list__rows {
   padding-bottom: 112px !important;
   box-sizing: border-box !important;
 }
@@ -10,7 +10,7 @@ html[data-grok-bot-skin] [aria-label="调整侧边栏大小"] {
   z-index: 100 !important;
   pointer-events: auto !important;
 }
-html[data-grok-bot-skin] #grok-bot-skin-usage {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] #grok-bot-skin-usage {
   position: absolute !important;
   left: 10px !important;
   right: 18px !important;
@@ -30,8 +30,8 @@ html[data-grok-bot-skin] #grok-bot-skin-usage {
   pointer-events: none !important;
   user-select: none !important;
 }
-html[data-grok-bot-skin] body:not(:has(.sand-agents-sidebar)) #grok-bot-skin-usage,
-html[data-grok-bot-skin] #grok-bot-skin-usage[data-hud-place="window"] {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] body:not(:has(.sand-agents-sidebar)) #grok-bot-skin-usage,
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] #grok-bot-skin-usage[data-hud-place="window"] {
   position: fixed !important;
   top: 12px !important;
   right: 16px !important;
@@ -39,24 +39,24 @@ html[data-grok-bot-skin] #grok-bot-skin-usage[data-hud-place="window"] {
   bottom: auto !important;
   width: min(240px, calc(100vw - 32px)) !important;
 }
-html[data-grok-bot-skin] #grok-bot-skin-usage .hud-kicker {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] #grok-bot-skin-usage .hud-kicker {
   opacity: 0.72;
   font-size: 10px;
   letter-spacing: 0.04em;
   margin-bottom: 3px;
 }
-html[data-grok-bot-skin] #grok-bot-skin-usage .hud-line {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] #grok-bot-skin-usage .hud-line {
   font-weight: 650;
   margin-bottom: 5px;
 }
-html[data-grok-bot-skin] #grok-bot-skin-usage .hud-bar {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] #grok-bot-skin-usage .hud-bar {
   height: 6px;
   border-radius: 99px;
   overflow: hidden;
   background: color-mix(in srgb, var(--grok-skin-text, #888) 12%, transparent);
   margin-bottom: 4px;
 }
-html[data-grok-bot-skin] #grok-bot-skin-usage .hud-bar > i {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] #grok-bot-skin-usage .hud-bar > i {
   display: block;
   height: 100%;
   width: 0;
@@ -64,7 +64,7 @@ html[data-grok-bot-skin] #grok-bot-skin-usage .hud-bar > i {
   background: var(--grok-skin-accent, #599ce7);
   transition: width 0.4s ease;
 }
-html[data-grok-bot-skin] #grok-bot-skin-usage .hud-meta {
+html[data-grok-bot-skin][data-grok-bot-skin-usage="on"] #grok-bot-skin-usage .hud-meta {
   opacity: 0.78;
   font-size: 11px;
 }`;
@@ -88,6 +88,15 @@ function usageHudTeardown() {
 
 function usageHudBoot() {
   const HOST_ID = "grok-bot-skin-usage";
+  if (document.documentElement.dataset.grokBotSkinUsage === "off") {
+    const timer = window.__grokBotSkinUsageTimer;
+    if (timer) {
+      clearInterval(timer);
+      window.__grokBotSkinUsageTimer = 0;
+    }
+    document.getElementById(HOST_ID)?.remove();
+    return;
+  }
 
   function desktopApi() {
     const desktop = window.desktop;

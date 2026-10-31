@@ -9,6 +9,7 @@ import {
 } from "./paths.mjs";
 import { compileOverlay, clearExpression, injectExpression } from "./compile.mjs";
 import { debugAvailable, evaluateOnPages, waitForDebug } from "./cdp.mjs";
+import { readPrefs } from "./prefs.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -86,9 +87,10 @@ export async function launchGrokBot({ port = DEBUG_PORT } = {}) {
   return { app, launched: true, debug: true };
 }
 
-export async function applyChrome(pack, { port = DEBUG_PORT, persist = true } = {}) {
-  const css = compileOverlay(pack);
-  const expression = injectExpression(css, pack.id);
+export async function applyChrome(pack, { port = DEBUG_PORT, persist = true, showUsageHud } = {}) {
+  const hud = showUsageHud ?? readPrefs().showUsageHud !== false;
+  const css = compileOverlay(pack, { showUsageHud: hud });
+  const expression = injectExpression(css, pack.id, { showUsageHud: hud });
   const results = await evaluateOnPages(expression, port, { persist });
   rememberSkin(pack, { mode: "chrome" });
   return { cssBytes: css.length, results };
