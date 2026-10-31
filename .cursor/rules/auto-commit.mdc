@@ -1,5 +1,5 @@
 ---
-description: Auto-commit each change with Google-style English messages as Acropolis
+description: Auto-commit each change with Google-style English messages
 alwaysApply: true
 ---
 
