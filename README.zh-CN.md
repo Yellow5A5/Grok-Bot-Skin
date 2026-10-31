@@ -53,6 +53,20 @@ npm run studio
 | `avenger-neon` | 复联霓 | Dark |
 | `jade-grove` | 青玉林 | Dark |
 
+## 预览
+
+下面是真实 Grok Bot 窗口。侧栏名字和聊天是英文示意，不是真实对话。
+
+| 水墨夜 | 草帽海 |
+|:---:|:---:|
+| ![水墨夜](docs/screenshots/ink-night.jpg) | ![草帽海](docs/screenshots/straw-sea.jpg) |
+
+| 木叶暖 | 复联霓 |
+|:---:|:---:|
+| ![木叶暖](docs/screenshots/leaf-warm.jpg) | ![复联霓](docs/screenshots/avenger-neon.jpg) |
+
+![青玉林](docs/screenshots/jade-grove.jpg)
+
 状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随、登录启动、是否显示订阅用量，以及语言（`en` / `zh`）。
 
 把 Grok Bot 的 Settings → Appearance 调成皮肤要求的 Dark / Light。

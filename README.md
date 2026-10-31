@@ -53,6 +53,20 @@ npm run studio
 | `avenger-neon` | Avenger Neon | Dark |
 | `jade-grove` | Jade Grove | Dark |
 
+## Preview
+
+These shots are the real Grok Bot window. Sidebar names and chat lines are mock English, not a live transcript.
+
+| Ink Night | Straw Sea |
+|:---:|:---:|
+| ![Ink Night](docs/screenshots/ink-night.jpg) | ![Straw Sea](docs/screenshots/straw-sea.jpg) |
+
+| Leaf Warm | Avenger Neon |
+|:---:|:---:|
+| ![Leaf Warm](docs/screenshots/leaf-warm.jpg) | ![Avenger Neon](docs/screenshots/avenger-neon.jpg) |
+
+![Jade Grove](docs/screenshots/jade-grove.jpg)
+
 State lives in `~/Library/Application Support/grok-bot-skin/`: `active.json` is the last skin, `prefs.json` is Dock-follow, login, usage chip, and language (`en` or `zh`).
 
 Set Grok Bot Settings → Appearance to the Dark or Light value the pack asks for.
