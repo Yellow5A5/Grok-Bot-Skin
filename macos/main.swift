@@ -13,11 +13,13 @@ struct Snapshot: Codable {
   var followOfficialLaunch: Bool { prefs?.followOfficialLaunch ?? true }
   var openAtLogin: Bool { prefs?.openAtLogin ?? true }
   var showUsageHud: Bool { prefs?.showUsageHud ?? true }
+  var locale: String { prefs?.locale == "zh" ? "zh" : "en" }
 
   struct Prefs: Codable {
     var followOfficialLaunch: Bool?
     var openAtLogin: Bool?
     var showUsageHud: Bool?
+    var locale: String?
   }
 
   struct Pack: Codable {
@@ -31,6 +33,49 @@ struct Snapshot: Codable {
     var running: Bool
     var debug: Bool
     var state: String
+  }
+}
+
+struct MenuCopy {
+  let zh: Bool
+
+  init(_ locale: String) {
+    zh = locale == "zh"
+  }
+
+  var fallbackTitle: String { zh ? "皮肤" : "Skin" }
+  var accessibility: String { zh ? "Grok Bot 皮肤" : "Grok Bot Skin" }
+  var openWear: String { zh ? "打开 Grok Bot 并套上" : "Open Grok Bot and wear" }
+  var reopen: String { zh ? "退出并重新打开 Grok Bot" : "Quit and reopen Grok Bot" }
+  var empty: String { zh ? "没有皮肤包" : "No skin packs" }
+  var follow: String { zh ? "官方 Dock 打开也套皮肤" : "Follow official Dock launches" }
+  var usage: String { zh ? "显示订阅用量" : "Show usage chip" }
+  var login: String { zh ? "登录时打开菜单栏" : "Open menu bar at login" }
+  var language: String { "中文" }
+  var studio: String { zh ? "皮肤工作室" : "Skin Studio" }
+  var quit: String { zh ? "退出菜单栏" : "Quit menu bar" }
+  var headerUnknown: String { zh ? "无法读取皮肤状态" : "Can't read skin status" }
+  var applyFailed: String { zh ? "套皮肤失败" : "Could not apply skin" }
+  var nodeMissing: String {
+    zh
+      ? "找不到 node。请安装 Node.js，或把它放到 /opt/homebrew/bin。"
+      : "Can't find node. Install Node.js, or put it in /opt/homebrew/bin."
+  }
+
+  func headerNow(_ name: String) -> String {
+    zh ? "当前：\(name)" : "Now: \(name)"
+  }
+
+  func headerNotWearing(_ name: String) -> String {
+    zh ? "未套上 · \(name)" : "Not wearing · \(name)"
+  }
+
+  func headerClosed(_ name: String) -> String {
+    zh ? "未打开 · \(name)" : "Not open · \(name)"
+  }
+
+  func cliMissing(_ path: String) -> String {
+    zh ? "找不到 grok-bot-skin CLI：\(path)" : "Can't find grok-bot-skin CLI: \(path)"
   }
 }
 
@@ -62,20 +107,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
   private var lastDebug = false
   private var applying = false
   private var lastFollowAttempt = Date.distantPast
+  private var lastLocale = "en"
 
   func applicationDidFinishLaunching(_ notification: Notification) {
+    let snap = loadSnapshot()
+    let copy = MenuCopy(snap?.locale ?? "en")
     if let button = statusItem.button {
-      let image = NSImage(systemSymbolName: "paintpalette.fill", accessibilityDescription: "Grok Bot 皮肤")
+      let image = NSImage(systemSymbolName: "paintpalette.fill", accessibilityDescription: copy.accessibility)
       image?.isTemplate = true
       button.image = image
       button.imagePosition = .imageLeading
-      button.title = "皮肤"
+      button.title = title(for: snap)
     }
     menu.delegate = self
     statusItem.menu = menu
-    rebuildMenu(snapshot: nil)
-    refreshTitle()
-    if let snap = loadSnapshot() {
+    rebuildMenu(snapshot: snap)
+    if let snap {
       syncLoginItem(enabled: snap.openAtLogin)
     }
     Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
@@ -125,6 +172,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     runInBackground { try self.runNode(["usage", current ? "off" : "on"]) }
   }
 
+  @objc private func toggleLocale(_ sender: Any?) {
+    let current = loadSnapshot()?.locale ?? "en"
+    runInBackground { try self.runNode(["lang", current == "zh" ? "en" : "zh"]) }
+  }
+
   private func onTick() {
     DispatchQueue.global(qos: .utility).async { [weak self] in
       guard let self else { return }
@@ -156,26 +208,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
   }
 
-  private func refreshTitle() {
-    DispatchQueue.global(qos: .utility).async { [weak self] in
-      let snap = self?.loadSnapshot()
-      DispatchQueue.main.async {
-        self?.statusItem.button?.title = self?.title(for: snap) ?? "皮肤"
-      }
-    }
-  }
-
   private func title(for snap: Snapshot?) -> String {
-    guard let snap else { return "皮肤" }
-    let name = snap.activeName.isEmpty ? "皮肤" : snap.activeName
+    let copy = MenuCopy(snap?.locale ?? "en")
+    guard let snap else { return copy.fallbackTitle }
+    let name = snap.activeName.isEmpty ? copy.fallbackTitle : snap.activeName
     return snap.status.debug ? name : "\(name) ·"
   }
 
   private func rebuildMenu(snapshot: Snapshot?) {
     menu.removeAllItems()
     let snap = snapshot
+    let copy = MenuCopy(snap?.locale ?? "en")
     let header = NSMenuItem(
-      title: headerTitle(snap),
+      title: headerTitle(snap, copy: copy),
       action: nil,
       keyEquivalent: ""
     )
@@ -184,8 +229,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     let openItem = NSMenuItem(
       title: snap?.status.running == true && snap?.status.debug != true
-        ? "退出并重新打开 Grok Bot"
-        : "打开 Grok Bot 并套上",
+        ? copy.reopen
+        : copy.openWear,
       action: #selector(openLast(_:)),
       keyEquivalent: ""
     )
@@ -206,14 +251,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(item)
       }
     } else {
-      let empty = NSMenuItem(title: "没有皮肤包", action: nil, keyEquivalent: "")
+      let empty = NSMenuItem(title: copy.empty, action: nil, keyEquivalent: "")
       empty.isEnabled = false
       menu.addItem(empty)
     }
 
     menu.addItem(.separator())
     let follow = NSMenuItem(
-      title: "官方 Dock 打开也套皮肤",
+      title: copy.follow,
       action: #selector(toggleFollow(_:)),
       keyEquivalent: ""
     )
@@ -221,7 +266,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     follow.state = (snap?.followOfficialLaunch ?? true) ? .on : .off
     menu.addItem(follow)
     let usage = NSMenuItem(
-      title: "显示订阅用量",
+      title: copy.usage,
       action: #selector(toggleUsage(_:)),
       keyEquivalent: ""
     )
@@ -229,30 +274,38 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     usage.state = (snap?.showUsageHud ?? true) ? .on : .off
     menu.addItem(usage)
     let login = NSMenuItem(
-      title: "登录时打开菜单栏",
+      title: copy.login,
       action: #selector(toggleLogin(_:)),
       keyEquivalent: ""
     )
     login.target = self
     login.state = (snap?.openAtLogin ?? true) ? .on : .off
     menu.addItem(login)
-    let studio = NSMenuItem(title: "皮肤工作室", action: #selector(openStudio(_:)), keyEquivalent: "")
+    let language = NSMenuItem(
+      title: copy.language,
+      action: #selector(toggleLocale(_:)),
+      keyEquivalent: ""
+    )
+    language.target = self
+    language.state = copy.zh ? .on : .off
+    menu.addItem(language)
+    let studio = NSMenuItem(title: copy.studio, action: #selector(openStudio(_:)), keyEquivalent: "")
     studio.target = self
     menu.addItem(studio)
-    let quit = NSMenuItem(title: "退出菜单栏", action: #selector(quitMenu(_:)), keyEquivalent: "")
+    let quit = NSMenuItem(title: copy.quit, action: #selector(quitMenu(_:)), keyEquivalent: "")
     quit.target = self
     menu.addItem(quit)
   }
 
-  private func headerTitle(_ snap: Snapshot?) -> String {
-    guard let snap else { return "无法读取皮肤状态" }
+  private func headerTitle(_ snap: Snapshot?, copy: MenuCopy) -> String {
+    guard let snap else { return copy.headerUnknown }
     if snap.status.debug {
-      return "当前：\(snap.activeName)"
+      return copy.headerNow(snap.activeName)
     }
     if snap.status.running {
-      return "未套上 · \(snap.activeName)"
+      return copy.headerNotWearing(snap.activeName)
     }
-    return "未打开 · \(snap.activeName)"
+    return copy.headerClosed(snap.activeName)
   }
 
   private func runInBackground(_ work: @escaping () throws -> String) {
@@ -265,14 +318,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if let snap { self?.lastDebug = snap.status.debug }
         DispatchQueue.main.async {
           self?.rebuildMenu(snapshot: snap)
-          self?.statusItem.button?.title = self?.title(for: snap) ?? "皮肤"
+          self?.statusItem.button?.title = self?.title(for: snap) ?? MenuCopy("en").fallbackTitle
         }
       } catch {
         DispatchQueue.main.async {
           NSApp.activate(ignoringOtherApps: true)
           let alert = NSAlert()
           alert.alertStyle = .warning
-          alert.messageText = "套皮肤失败"
+          alert.messageText = MenuCopy(self?.loadSnapshot()?.locale ?? "en").applyFailed
           alert.informativeText = error.localizedDescription
           alert.runModal()
         }
@@ -283,16 +336,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
   private func loadSnapshot() -> Snapshot? {
     guard let raw = try? runNode(["snapshot"]) else { return nil }
     let data = Data(raw.utf8)
-    return try? JSONDecoder().decode(Snapshot.self, from: data)
+    guard let snap = try? JSONDecoder().decode(Snapshot.self, from: data) else { return nil }
+    lastLocale = snap.locale
+    return snap
   }
 
   private func runNode(_ args: [String]) throws -> String {
+    let copy = MenuCopy(lastLocale)
     guard let node = findNode() else {
-      throw CliError.message("找不到 node。请安装 Node.js，或把它放到 /opt/homebrew/bin。")
+      throw CliError.message(copy.nodeMissing)
     }
     let cli = (kitRoot() as NSString).appendingPathComponent("bin/cli.mjs")
     guard FileManager.default.isReadableFile(atPath: cli) else {
-      throw CliError.message("找不到 grok-bot-skin CLI：\(cli)")
+      throw CliError.message(copy.cliMissing(cli))
     }
     let task = Process()
     task.executableURL = URL(fileURLWithPath: node)

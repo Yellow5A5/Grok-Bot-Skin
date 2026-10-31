@@ -186,10 +186,12 @@ ${host} .sand-file-card${BEAT} span:not(.sand-file-card__meta) {
 
 export function injectExpression(css, skinId, options = {}) {
   const showUsageHud = options.showUsageHud !== false;
+  const locale = options.locale === "zh" ? "zh" : "en";
   return `(() => {
     const id = "grok-bot-skin-overlay";
     document.documentElement.dataset.grokBotSkin = ${JSON.stringify(skinId)};
     document.documentElement.dataset.grokBotSkinUsage = ${JSON.stringify(showUsageHud ? "on" : "off")};
+    document.documentElement.dataset.grokBotSkinLocale = ${JSON.stringify(locale)};
     let el = document.getElementById(id);
     if (!el) {
       el = document.createElement("style");
@@ -227,7 +229,7 @@ export function injectExpression(css, skinId, options = {}) {
       );
     }
     ${showUsageHud ? usageHudBootSource() : usageHudTeardownSource()}
-    return { ok: true, skin: ${JSON.stringify(skinId)}, bytes: el.textContent.length, usage: ${JSON.stringify(showUsageHud ? "on" : "off")} };
+    return { ok: true, skin: ${JSON.stringify(skinId)}, bytes: el.textContent.length, usage: ${JSON.stringify(showUsageHud ? "on" : "off")}, locale: ${JSON.stringify(locale)} };
   })()`;
 }
 
@@ -238,6 +240,7 @@ export function clearExpression() {
     if (el) el.remove();
     delete document.documentElement.dataset.grokBotSkin;
     delete document.documentElement.dataset.grokBotSkinUsage;
+    delete document.documentElement.dataset.grokBotSkinLocale;
     return { ok: true, cleared: true };
   })()`;
 }

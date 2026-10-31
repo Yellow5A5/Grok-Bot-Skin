@@ -36,6 +36,7 @@ npm run menubar
 - 点 Dock 里官方 Grok Bot：会套上上一套皮肤
 - 点菜单栏皮肤名：原地换肤
 - **显示订阅用量**（默认开）：能读到 token 就显示消耗，否则显示本周期已用/剩余百分比。不想看就取消勾选
+- **中文**（默认关）：菜单栏和用量卡片默认英文，勾选后切中文
 
 预览、做包、改 token：
 
@@ -52,13 +53,13 @@ npm run studio
 | `avenger-neon` | 复联霓 | Dark |
 | `jade-grove` | 青玉林 | Dark |
 
-状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随、登录启动和是否显示订阅用量。
+状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随、登录启动、是否显示订阅用量，以及语言（`en` / `zh`）。
 
 把 Grok Bot 的 Settings → Appearance 调成皮肤要求的 Dark / Light。
 
 ## 界面怎么套上
 
-Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端口（`127.0.0.1:19222`），再注入 CSS。只改颜色变量，不改 asar、不破签名。套上皮肤后，侧栏头像**上方**默认有一块用量卡片：接口给 token 就显示消耗，否则显示订阅**已用 / 剩余百分比**。卡片不拦截点击。菜单栏取消勾选 **显示订阅用量**，或 `npx grok-bot-skin usage off`。
+Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端口（`127.0.0.1:19222`），再注入 CSS。只改颜色变量，不改 asar、不破签名。套上皮肤后，侧栏头像**上方**默认有一块用量卡片：接口给 token 就显示消耗，否则显示订阅**已用 / 剩余百分比**。卡片不拦截点击。菜单栏取消勾选 **显示订阅用量**，或 `npx grok-bot-skin usage off`。菜单栏和卡片默认英文，勾选 **中文** 或 `npx grok-bot-skin lang zh`。
 
 | 你怎么打开 | 会怎样 |
 |---|---|

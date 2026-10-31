@@ -10,7 +10,7 @@ import {
 } from "../src/lib/apply.mjs";
 import { compileOverlay } from "../src/lib/compile.mjs";
 import { PackError, getPack, listPacks, loadPack, validatePack } from "../src/lib/pack.mjs";
-import { parseOnOff, writePrefs } from "../src/lib/prefs.mjs";
+import { parseLocale, parseOnOff, writePrefs } from "../src/lib/prefs.mjs";
 import {
   openMenuBar,
   resolvePack,
@@ -28,6 +28,7 @@ const USAGE = `grok-bot-skin — Grok Bot 皮肤工具
   follow [on|off]        官方 Dock 打开时也套皮肤（需菜单栏在跑）
   login [on|off]         登录时打开菜单栏
   usage [on|off]         显示侧栏订阅用量卡片
+  lang [en|zh]           菜单栏和用量卡片语言（默认英文）
   list                   列出已安装皮肤
   apply <id>             套用界面（调试端口已开时）
   launch [id]            用皮肤调试端口启动 Grok Bot 并套上界面
@@ -112,6 +113,20 @@ async function main() {
         prefs.showUsageHud
           ? "已显示侧栏订阅用量卡片。"
           : "已隐藏侧栏订阅用量卡片。",
+      );
+      return;
+    }
+    case "lang":
+    case "locale": {
+      const prefs = writePrefs({ locale: parseLocale(args[0]) });
+      const status = await grokBotStatus();
+      if (status.debug) {
+        await applyChrome(resolvePack());
+      }
+      console.log(
+        prefs.locale === "zh"
+          ? "菜单栏和用量卡片：中文"
+          : "Menu bar and usage chip: English",
       );
       return;
     }

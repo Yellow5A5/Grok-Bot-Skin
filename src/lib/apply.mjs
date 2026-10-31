@@ -87,10 +87,15 @@ export async function launchGrokBot({ port = DEBUG_PORT } = {}) {
   return { app, launched: true, debug: true };
 }
 
-export async function applyChrome(pack, { port = DEBUG_PORT, persist = true, showUsageHud } = {}) {
-  const hud = showUsageHud ?? readPrefs().showUsageHud !== false;
+export async function applyChrome(
+  pack,
+  { port = DEBUG_PORT, persist = true, showUsageHud, locale } = {},
+) {
+  const prefs = readPrefs();
+  const hud = showUsageHud ?? prefs.showUsageHud !== false;
+  const loc = locale ?? prefs.locale;
   const css = compileOverlay(pack, { showUsageHud: hud });
-  const expression = injectExpression(css, pack.id, { showUsageHud: hud });
+  const expression = injectExpression(css, pack.id, { showUsageHud: hud, locale: loc });
   const results = await evaluateOnPages(expression, port, { persist });
   rememberSkin(pack, { mode: "chrome" });
   return { cssBytes: css.length, results };

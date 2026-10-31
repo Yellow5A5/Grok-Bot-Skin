@@ -132,12 +132,37 @@ function usageHudBoot() {
     return `${Math.round(n)}`;
   }
 
+  function copy() {
+    const zh = document.documentElement.dataset.grokBotSkinLocale === "zh";
+    return zh
+      ? {
+          kicker: "本周期用量",
+          usagePlan: (plan) => `用量 · ${plan}`,
+          loading: "读取中…",
+          signedOut: "当前窗口还没登录",
+          unavailable: "暂时读不到用量",
+          tokens: (total, inn, out) => `${total} tok · 入 ${inn} / 出 ${out}`,
+          percent: (used, left) => `已用 ${used}% · 剩 ${left}%`,
+          reset: (month, day) => `${month}/${day} 重置`,
+        }
+      : {
+          kicker: "This cycle",
+          usagePlan: (plan) => `Usage · ${plan}`,
+          loading: "Loading…",
+          signedOut: "This window is not signed in",
+          unavailable: "Usage unavailable",
+          tokens: (total, inn, out) => `${total} tok · in ${inn} / out ${out}`,
+          percent: (used, left) => `${used}% used · ${left}% left`,
+          reset: (month, day) => `Resets ${month}/${day}`,
+        };
+  }
+
   function formatReset(ms) {
     const n = asNum(ms);
     if (n == null || n <= 0) return "";
     const date = new Date(n);
     if (!Number.isFinite(date.getTime())) return "";
-    return `${date.getMonth() + 1}/${date.getDate()} 重置`;
+    return copy().reset(date.getMonth() + 1, date.getDate());
   }
 
   function pickTokens(value, depth = 0) {
@@ -265,21 +290,22 @@ function usageHudBoot() {
 
   function paint(state) {
     const host = ensureHost();
+    const text = copy();
     if (!state || (state.tokens == null && state.used == null)) {
-      const why = state && state.signedIn === false ? "当前窗口还没登录" : "暂时读不到用量";
+      const why = state && state.signedIn === false ? text.signedOut : text.unavailable;
       host.innerHTML =
-        `<div class="hud-kicker">本周期用量</div><div class="hud-line">${why}</div>`;
+        `<div class="hud-kicker">${text.kicker}</div><div class="hud-line">${why}</div>`;
       return;
     }
-    const kicker = state.plan ? `用量 · ${state.plan}` : "本周期用量";
+    const kicker = state.plan ? text.usagePlan(state.plan) : text.kicker;
     const parts = [`<div class="hud-kicker">${kicker}</div>`];
     if (state.tokens) {
       parts.push(
-        `<div class="hud-line">${formatTok(state.tokens.total)} tok · 入 ${formatTok(state.tokens.input)} / 出 ${formatTok(state.tokens.output)}</div>`,
+        `<div class="hud-line">${text.tokens(formatTok(state.tokens.total), formatTok(state.tokens.input), formatTok(state.tokens.output))}</div>`,
       );
     } else {
       parts.push(
-        `<div class="hud-line">已用 ${Math.round(state.used)}% · 剩 ${Math.round(state.remaining)}%</div>`,
+        `<div class="hud-line">${text.percent(Math.round(state.used), Math.round(state.remaining))}</div>`,
       );
     }
     if (state.used != null) {
@@ -289,7 +315,7 @@ function usageHudBoot() {
     }
     const meta = [];
     if (state.tokens && state.used != null) {
-      meta.push(`已用 ${Math.round(state.used)}% · 剩 ${Math.round(state.remaining)}%`);
+      meta.push(text.percent(Math.round(state.used), Math.round(state.remaining)));
     }
     const reset = formatReset(state.resetMs);
     if (reset) meta.push(reset);
@@ -308,8 +334,9 @@ function usageHudBoot() {
 
   const host = ensureHost();
   if (!host.dataset.hudReady) {
+    const text = copy();
     host.innerHTML =
-      '<div class="hud-kicker">本周期用量</div><div class="hud-line">读取中…</div>';
+      `<div class="hud-kicker">${text.kicker}</div><div class="hud-line">${text.loading}</div>`;
   }
   if (window.__grokBotSkinUsageTimer) {
     clearInterval(window.__grokBotSkinUsageTimer);

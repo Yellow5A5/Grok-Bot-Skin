@@ -36,6 +36,7 @@ In the menu, leave **Open menu bar at login** and **Follow official Dock launche
 - Official Dock icon: last skin is applied
 - Menu bar skin name: switch in place
 - **Show usage chip** (on by default): plan percent remaining, or token totals when Grok Bot exposes them. Uncheck to hide.
+- **中文** (off by default): switch the menu bar and usage chip to Chinese. English is the default.
 
 Preview packs and export zips:
 
@@ -52,7 +53,7 @@ npm run studio
 | `avenger-neon` | Avenger Neon | Dark |
 | `jade-grove` | Jade Grove | Dark |
 
-State lives in `~/Library/Application Support/grok-bot-skin/`: `active.json` is the last skin, `prefs.json` is Dock-follow, login, and whether the usage chip is shown.
+State lives in `~/Library/Application Support/grok-bot-skin/`: `active.json` is the last skin, `prefs.json` is Dock-follow, login, usage chip, and language (`en` or `zh`).
 
 Set Grok Bot Settings → Appearance to the Dark or Light value the pack asks for.
 
@@ -60,7 +61,7 @@ Set Grok Bot Settings → Appearance to the Dark or Light value the pack asks fo
 
 Grok Bot has no official theme API. The launcher adds a loopback debug port (`127.0.0.1:19222`) and injects CSS. It only changes color tokens. It does not rewrite the asar or break the signature.
 
-After a skin is on, a chip above the sidebar avatar shows this cycle’s usage: token totals if the signed-in APIs return them, otherwise **percent used / remaining** on the Grok Bot plan. It does not intercept clicks. Hide it from the menu (**Show usage chip**) or `npx grok-bot-skin usage off`.
+After a skin is on, a chip above the sidebar avatar shows this cycle’s usage: token totals if the signed-in APIs return them, otherwise **percent used / remaining** on the Grok Bot plan. It does not intercept clicks. Hide it from the menu (**Show usage chip**) or `npx grok-bot-skin usage off`. The chip and menu bar default to English; check **中文** or run `npx grok-bot-skin lang zh`.
 
 | How you open Grok Bot | What happens |
 |---|---|

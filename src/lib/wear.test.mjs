@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseOnOff } from "./prefs.mjs";
+import { parseLocale, parseOnOff } from "./prefs.mjs";
 import { preferredPack, resolvePack, snapshot } from "./wear.mjs";
 
 test("snapshot lists bundled skins with a preferred id", () => {
@@ -13,12 +13,20 @@ test("snapshot lists bundled skins with a preferred id", () => {
   assert.equal(typeof snap.prefs.followOfficialLaunch, "boolean");
   assert.equal(typeof snap.prefs.openAtLogin, "boolean");
   assert.equal(typeof snap.prefs.showUsageHud, "boolean");
+  assert.ok(["en", "zh"].includes(snap.prefs.locale));
 });
 
 test("parseOnOff accepts on/off tokens", () => {
   assert.equal(parseOnOff("on"), true);
   assert.equal(parseOnOff("off"), false);
   assert.equal(parseOnOff("false"), false);
+});
+
+test("parseLocale defaults to English", () => {
+  assert.equal(parseLocale("en"), "en");
+  assert.equal(parseLocale(""), "en");
+  assert.equal(parseLocale("zh-CN"), "zh");
+  assert.equal(parseLocale("chinese"), "zh");
 });
 
 test("resolvePack falls back to the remembered or featured skin", () => {

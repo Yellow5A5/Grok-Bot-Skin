@@ -43,10 +43,15 @@ test("injecting a skin also boots the usage HUD", () => {
   assert.match(js, /desktop\.main/);
   assert.match(js, /grok-bot-skin-usage/);
   assert.match(js, /grokBotSkinUsage = "on"/);
+  assert.match(js, /grokBotSkinLocale = "en"/);
+  assert.match(js, /This window is not signed in/);
+  assert.match(js, /当前窗口还没登录/);
   const hidden = injectExpression("/*css*/", "straw-sea", { showUsageHud: false });
   assert.match(hidden, /grokBotSkinUsage = "off"/);
   assert.match(hidden, /grok-bot-skin-usage/);
   assert.doesNotMatch(hidden, /getCursorUsageSummary/);
+  const chinese = injectExpression("/*css*/", "straw-sea", { locale: "zh" });
+  assert.match(chinese, /grokBotSkinLocale = "zh"/);
 });
 
 test("cartoon packs are light and paint window ornaments", () => {
