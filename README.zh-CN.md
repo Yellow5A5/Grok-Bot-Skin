@@ -2,11 +2,7 @@
 
 [English](README.md) | **中文**
 
-给 [Grok Bot](https://grok.com) 换皮肤，并且让别人也能换。皮肤是独立的数据包，**不修改** `Grok Bot.app`。
-
-这套工具只做 **界面**：覆盖 token，并把壁纸画在窗口层 `.sand-shell` 上。Bot 头像是 Grok Bot 自己的功能，这里不管。
-
-日常：菜单栏记住上一套皮肤，列表里来回切。菜单栏在跑时，点官方 Dock 图标也会套上（先退出没带端口的进程，再带端口打开）。官方包本身不动。
+给 [Grok Bot](https://grok.com) 换皮肤：菜单栏切换，工作室预览和导出。皮肤是文件夹，**不修改** `Grok Bot.app`。
 
 ```mermaid
 flowchart LR
@@ -24,21 +20,10 @@ flowchart LR
 
 需要 Node 22+，macOS。
 
-第一次，打开菜单栏（同时会打开 Grok Bot 并套上上一套皮肤）：
-
 ```bash
 npm run menubar
 # 或双击 scripts/Show Skin Menu.command
 ```
-
-菜单栏勾选 **登录时打开菜单栏**、**官方 Dock 打开也套皮肤**（默认都开）。之后：
-
-- 点 Dock 里官方 Grok Bot：会套上上一套皮肤
-- 点菜单栏皮肤名：原地换肤
-- **显示订阅用量**（默认开）：能读到 token 就显示消耗，否则显示本周期已用/剩余百分比。不想看就取消勾选
-- **语言 → English / 中文**：菜单栏、用量卡片、皮肤工作室和皮肤名一起切。默认英文
-
-预览、做包、改 token：
 
 ```bash
 npm run studio
@@ -53,9 +38,32 @@ npm run studio
 | `avenger-neon` | 复联霓 | Dark |
 | `jade-grove` | 青玉林 | Dark |
 
+把 Grok Bot 的 Settings → Appearance 调成皮肤要求的 Dark / Light。状态在 `~/Library/Application Support/grok-bot-skin/`。
+
+## 菜单栏
+
+`npm run menubar` 会在菜单栏放一个调色盘，并打开 Grok Bot、套上上一套皮肤。
+
+![菜单栏](docs/screenshots/menubar.jpg)
+
+- 点皮肤名：原地换肤
+- **官方 Dock 打开也套皮肤**：官方 Dock 图标也会带上上一套皮肤（先退出没带端口的进程，再带端口打开）
+- **显示订阅用量**：本周期已用 / 剩余百分比；接口给 token 时显示消耗
+- **登录时打开菜单栏**
+- **语言 → English / 中文**：菜单栏、用量卡片、工作室和皮肤名一起切
+- **皮肤工作室**：打开本地预览页
+
+## 皮肤工作室
+
+`npm run studio` 打开 `http://127.0.0.1:4177/`。预览 token 和壁纸，套界面，或导出 zip。
+
+![皮肤工作室](docs/screenshots/studio.jpg)
+
+右上角 English / 中文 和菜单栏用同一份语言设置。
+
 ## 预览
 
-下面是真实 Grok Bot 窗口。侧栏名字和聊天是英文示意，不是真实对话。
+真实 Grok Bot 窗口。侧栏和聊天是英文示意。
 
 | 水墨夜 | 草帽海 |
 |:---:|:---:|
@@ -67,13 +75,9 @@ npm run studio
 
 ![青玉林](docs/screenshots/jade-grove.jpg)
 
-状态在 `~/Library/Application Support/grok-bot-skin/`：`active.json` 是上一套皮肤，`prefs.json` 是 Dock 跟随、登录启动、是否显示订阅用量，以及语言（`en` / `zh`）。
-
-把 Grok Bot 的 Settings → Appearance 调成皮肤要求的 Dark / Light。
-
 ## 界面怎么套上
 
-Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端口（`127.0.0.1:19222`），再注入 CSS。只改颜色变量，不改 asar、不破签名。套上皮肤后，侧栏头像**上方**默认有一块用量卡片：接口给 token 就显示消耗，否则显示订阅**已用 / 剩余百分比**。卡片不拦截点击。菜单栏取消勾选 **显示订阅用量**，或 `npx grok-bot-skin usage off`。菜单栏、卡片和工作室默认英文，选 **语言 → 中文** 或 `npx grok-bot-skin lang zh`。
+启动器给进程加上本机回环调试端口（`127.0.0.1:19222`），再注入 CSS。只改颜色变量，不改 asar、不破签名。
 
 | 你怎么打开 | 会怎样 |
 |---|---|
@@ -82,9 +86,18 @@ Grok Bot 没有官方主题 API。启动器给进程加上本机回环调试端�
 | 官方 Dock 图标，且菜单栏在跑、跟随已开 | 若这次没带端口，会先退出再带端口打开并套上 |
 | 官方 Dock 图标，菜单栏没开或跟随已关 | 原样官方进程，界面没皮肤 |
 
-关掉跟随：菜单栏取消勾选，或 `npx grok-bot-skin follow off`。
-
 不要改 `/Applications/Grok Bot.app`：Developer ID 签名、公证、`ElectronAsarIntegrity`，一改就破校验，官方更新也会冲掉。
+
+## 自己做一套皮肤
+
+见 [docs/authoring.zh-CN.md](docs/authoring.zh-CN.md)（[English](docs/authoring.md)）。最短路径：
+
+1. 复制 `examples/template/` 或任意 `packs/*`
+2. 文件夹名与 `skin.json` 的 `id` 一致
+3. 换成自己的壁纸和封面图
+4. 改 `chrome.tokens`
+5. `npx grok-bot-skin validate packs/my-skin`
+6. `npx grok-bot-skin pack my-skin`
 
 ## 分享给别人
 
@@ -100,18 +113,7 @@ npx grok-bot-skin import ~/Downloads/ink-night-1.0.0.grokskin.zip
 npx grok-bot-skin studio
 ```
 
-导入的包放在 `~/Library/Application Support/grok-bot-skin/packs/`，不污染仓库。同 id 时用户包覆盖自带包。
-
-## 自己做一套皮肤
-
-见 [docs/authoring.zh-CN.md](docs/authoring.zh-CN.md)（[English](docs/authoring.md)）。最短路径：
-
-1. 复制 `examples/template/` 或任意 `packs/*`
-2. 文件夹名与 `skin.json` 的 `id` 一致
-3. 换成自己的壁纸和封面图
-4. 改 `chrome.tokens`
-5. `npx grok-bot-skin validate packs/my-skin`
-6. `npx grok-bot-skin pack my-skin`
+导入的包在 `~/Library/Application Support/grok-bot-skin/packs/`。同 id 时用户包覆盖自带包。
 
 ## 命令
 
@@ -122,7 +124,7 @@ npm run menubar   # 菜单栏，并打开 Grok Bot 套上上一套皮肤
 npm run studio    # 预览、做包
 ```
 
-`npm run open` 只在菜单栏已经在跑、只想再套一次皮肤时用。做包、导入写在上面两节。其余给调试用，`npx grok-bot-skin` 会列出。
+`npm run open` 只在菜单栏已经在跑、只想再套一次皮肤时用。其余给调试用，`npx grok-bot-skin` 会列出。
 
 ## 许可
 

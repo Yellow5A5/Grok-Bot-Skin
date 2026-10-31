@@ -8,7 +8,7 @@
 my-skin/
   skin.json
   assets/
-    avatar.jpg      # 工作室列表封面，不是去改 Grok Bot 头像
+    avatar.jpg      # 工作室列表封面
     wallpaper.jpg   # 可选
 ```
 
